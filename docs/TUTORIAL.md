@@ -43,6 +43,9 @@ The Chapters tab shows every chapter as a card: its title, status, word count ag
 2. **Full synopses** shows each chapter's whole synopsis instead of the first lines.
 3. **The status strip** (switched on with Options → Display → Color chapters by status) shows the whole manuscript at a glance, one block per chapter, sized by length and colored from *Idea* to *Done*. Click a block to open that chapter.
 4. **A card.** Click it to open the chapter.
+5. **Select** lets you change several chapters at once. Tick them (Shift-click ticks everything in between), then set their status or type, add or remove a tag, give them a time, or move them to the trash. With *Custom* order, dragging one ticked chapter moves all of them together. Every change has an Undo.
+
+![Several chapters selected](tutorial/select.png)
 
 Each chapter has its own sheet above the text: target length, tags, and **Chapter details** with type (chapter, prologue, scene and so on), status, narration, point of view, the characters and places in it, when it happens, a synopsis and the arc beats it carries.
 
@@ -53,6 +56,8 @@ Each chapter has its own sheet above the text: target length, tags, and **Chapte
 ![The cast check in chapter 2](tutorial/castcheck.png)
 
 Click one to add it. Quire looks for each name exactly as written, and for the other names listed under *Also known as* on the character or place sheet, so if the text calls Sherlock Holmes "Holmes", add "Holmes" there. Nothing is added unless you click.
+
+**When it happens** takes any wording, like "1887-03-14" or "Day 3, evening". Switch on **Calendar** beside it to pick a date and time from the story's calendar instead, with an optional end for a chapter that spans several days. The calendar is chosen on the story overview under *Story time*: real dates, plain days, or a calendar of your own with its months, weekdays, eras and leap years. There you can also name points in time ("The Long Winter") and set the span the whole story covers. The overview also takes a **title image**, which the e-book can use as its cover.
 
 ## 4. Writing a chapter
 
@@ -69,7 +74,17 @@ Scroll down a chapter's sheet to its text.
 
 Options → Display → **Buttons above the text…** changes the order of these buttons and which ones show.
 
-A few things happen as you type: `"quotes"` become “quotes” (English, German or French style), `--` becomes —, and `...` becomes …. Ctrl+Z right after undoes just that. Type `[[Watson]]` to link to another entry; the entry you link to lists the link back.
+A few things happen as you type: `"quotes"` become “quotes” (English, German or French style), `--` becomes —, and `...` becomes …. Ctrl+Z right after undoes just that.
+
+**Undo** (Ctrl+Z, redo with Ctrl+Shift+Z or Ctrl+Y) steps back through your typing and Quire's own changes to the text, such as speaker marks, passage tags, comments and alignment, in the order you made them. On a phone, the message that appears after such a change has an Undo button.
+
+**Links:** select a name and press **[[ ]]** to make it a link, or press it anywhere else for an empty link that suggests entries as you type. Typing `[[` does the same. A link finds an entry by its title or by one of its *Also known as* names, and the entry you link to lists the link back.
+
+**Who says this** marks who speaks each line of dialogue, for Voices in Stats. Click into a line, press the speaker button, and pick a name. The panel stays open: click into the next line, or press **Next unmarked line**, and pick again. With a keyboard, 1–9 pick a speaker and N moves on. Marked lines get a dotted bar in the right margin.
+
+![Marking who says each line](tutorial/speaker.png)
+
+To say whose *scene* it is, don't select text: use the small labels at the start of the chapter and at each scene break, which appear once the chapter has two viewpoint characters. When the chapter has a time, each scene break also gets a clock, so a flashback scene can have its own date.
 
 To bring writing in, paste it (formatting is kept, clutter is dropped), drop an image straight into the text, or use [Import chapters](#15-bringing-writing-in-and-out).
 
@@ -110,7 +125,11 @@ Characters and places each get a sheet with prompts for what matters about them:
 
 ![A character sheet](tutorial/character.png)
 
-Under **Also known as**, list a character's other names (*Sherlock, Mr. Holmes*), and search finds them by any of them. Hints under each field explain what it's for; Options → Display → Field hints makes them smaller or hides them.
+Under **Also known as**, list a character's other names (*Sherlock, Mr. Holmes*), and search and `[[links]]` find them by any of them.
+
+**Your own fields** sit under the tags: press *+ Add your own field* to add fields like Magic, Rank or Born, as one line, longer text, a choice list, a number or a date. They appear on every character (or place, note, chapter or story arc) in the story, or in all your stories if you tick *Every story*.
+
+![Your own fields on a character sheet](tutorial/fields.png) Hints under each field explain what it's for; Options → Display → Field hints makes them smaller or hides them.
 
 ## 9. Story arcs
 
@@ -146,6 +165,8 @@ The Tags tab shows all of them, how often they're used and what they're used on.
 
 **Version history** keeps a snapshot whenever you pause writing in a chapter and when you leave it. Replay how the chapter grew, compare any version with the one before, name important ones ("Sent to beta readers"), and restore or copy an old version.
 
+**Milestones** (Story ▾ → Milestones) name the current version of every chapter at once, like "Draft 2 finished". Later, compare any chapter with a milestone, or bring one chapter back to it; the text it has today stays in its history.
+
 ![Version history](tutorial/history.png)
 
 ## 12. Stats
@@ -154,7 +175,11 @@ Stats covers the whole story: manuscript length against your target, writing pac
 
 ![Stats](tutorial/stats.png)
 
-**Voices** compares how your viewpoint characters narrate: their sentence length, favorite words and phrases, the senses they lean on, and whether a voice drifts from chapter to chapter. Mark who says a line of dialogue with the *Who says this* button, and Voices compares how your characters speak too. Only lines you mark count; Quire never guesses a speaker.
+The **Story timeline** puts your chapters in story order. Scenes with their own time appear indented under their date, and flashbacks are marked, so a flashback inside a chapter shows where it belongs without changing the chapter's word counts.
+
+![The Story timeline with a flashback scene](tutorial/timeline.png)
+
+**Voices** compares how your viewpoint characters narrate: their sentence length, favorite words and phrases, the senses they lean on, and whether a voice drifts from chapter to chapter. Senses are counted per 1,000 words; open *Words counted* to see which words counted, and *Your sense words…* to add your own, like a smell that runs through your story. Mark who says a line of dialogue with the *Who says this* button, and Voices compares how your characters speak too. Only lines you mark count; Quire never guesses a speaker.
 
 ## 13. Settings
 
@@ -175,7 +200,7 @@ Everything is in **Options**. This is the whole menu, laid out in three columns:
 ## 14. Saving and backups
 
 - **While you write,** Quire keeps your work in the browser's storage, so a closed tab loses nothing.
-- **Save file** (Ctrl+S) writes everything into `quire.html` itself. **The file is your real copy:** keep it with your writing and back it up like any document. In Chrome and Edge you choose the file once and later saves overwrite it. Firefox and Safari download an updated copy each time, which replaces the old one. A reminder nudges you if work has gone unsaved for a while.
+- **Save file** (Ctrl+S) writes everything into `quire.html` itself. **The file is your real copy:** keep it with your writing and back it up like any document. In Chrome and Edge you choose the file once and later saves overwrite it. Firefox and Safari download an updated copy each time, by default into your Downloads folder. To save over your Quire file in Firefox, open *Settings → General → Files and Applications* and turn on **Always ask you where to save files**. Each Save file then asks where to put it: choose your Quire file and confirm that you want to replace it. Firefox remembers the folder. A reminder nudges you if work has gone unsaved for a while.
 - **Backups** (Options → Backup) save one story or all of them as a `.json` file, which any copy of Quire can restore.
 - **Encryption** (Options → Backup, optional) locks backups and the saved file with a password. If you forget it, nobody can recover the writing, so keep it safe.
 
