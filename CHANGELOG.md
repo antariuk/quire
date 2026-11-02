@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.5.1 (2026-11-01)
+
+- **Read-through** (Story ▾ → Read through): the whole manuscript as one read-only text. Select words and press Comment, and the comment lands in that chapter.
+- **Relationships from both sides:** a character's sheet shows what other sheets say about them, with "Add the other side" to answer. With three or more rows, show them A–Z or in your own order (drag, or ↑ ↓).
+- **Trim version history:** in a chapter's Version history, or for the whole story (Story ▾), keep one version per day, one per week, or only named versions and the latest. "Thin now" applies the automatic thinning right away.
+- **Encrypted browser copy:** with "Encrypt this file" on, the working copy and history Quire keeps in the browser are encrypted with the same password. Opening an older copy whose password differs asks for the newer password to bring newer work in.
+- **Sidebar categories** (Options → Display): hide the categories a story doesn't need right now, and optionally show them in two columns.
+- **Walls of text:** for the whole manuscript, paragraph density lists the places with three or more complex or dense paragraphs in a row, instead of thousands of dots.
+- **Narration check:** "This is fine" hides a chapter's note (useful for text messages and letters) until it gets more sentences like those; examples are shown exactly as written.
+- **Your own fields on the story overview,** too.
+- **Places:** "Also known as" moved to the top of the sheet, as on characters.
+- Fixed: line breaks hidden inside pasted paragraphs (invisible in the editor) cut sentences in two for the stats and the narration check. Quire now stores them as the spaces you see.
+- Fixed: a tag typed with spaces before the # kept the #.
+- Fixed: Save file could leave out the newest version-history step.
+
 ## 1.5 (2026-10-31)
 
 - **Story time:** real dates, plain days ("Day 3") or a calendar of your own, with months, weekdays, eras and leap years, plus time labels like "The Long Winter". A chapter's Calendar switch picks its time from the story's calendar, with an optional end. Scenes can have their own time (a clock on the scene-break label), and the Story timeline shows them indented, marks flashbacks and flags anything outside the story's span. Times can go into the Word document, e-book and web page.

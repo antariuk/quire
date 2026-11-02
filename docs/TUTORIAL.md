@@ -20,7 +20,7 @@ Open `quire.html` in your browser. The first time, Quire offers two ways in:
 ![The title bar and tabs, numbered](tutorial/layout.png)
 
 1. **Story picker.** Switch between your stories.
-2. **Story menu.** Go to, new story, the example story, duplicate, delete, the trash, find and replace across the story, and importing chapters.
+2. **Story menu.** Go to, new story, the example story, duplicate, delete, the trash, read-through, milestones, trimming version history, find and replace across the story, and importing chapters.
 3. **Overview.** The story's own sheet: title, logline, genre, theme, target length and deadline, and a count of everything in it.
 4. **Stats.** Word counts, writing pace, chapter lengths, point of view, cast presence, Voices and more.
 5. **Sprint.** A writing timer with an optional word goal and a chime at the end.
@@ -31,7 +31,7 @@ Open `quire.html` in your browser. The first time, Quire offers two ways in:
 
 Anywhere in Quire, **Ctrl+K** (⌘K on a Mac) opens [Go to](#7-go-to), the quickest way to get anywhere.
 
-**Prefer a sidebar?** Options → Display → Navigation → Sidebar puts the tabs and the list of entries in a column on the left, the way older versions of Quire looked. On a phone, the sidebar becomes its own page.
+**Prefer a sidebar?** Options → Display → Navigation → Sidebar puts the tabs and the list of entries in a column on the left, the way older versions of Quire looked. On a phone, the sidebar becomes its own page. To make room for a long chapter list, Options → Display → *Sidebar categories…* hides the categories a story doesn't need right now, or puts them in two columns.
 
 ## 3. Chapters
 
@@ -125,9 +125,13 @@ Characters and places each get a sheet with prompts for what matters about them:
 
 ![A character sheet](tutorial/character.png)
 
-Under **Also known as**, list a character's other names (*Sherlock, Mr. Holmes*), and search and `[[links]]` find them by any of them.
+Under **Also known as**, list a character's or place's other names (*Sherlock, Mr. Holmes*; *The Big Apple*), and search, the cast check and `[[links]]` find them by any of them.
 
-**Your own fields** sit under the tags: press *+ Add your own field* to add fields like Magic, Rank or Born, as one line, longer text, a choice list, a number or a date. They appear on every character (or place, note, chapter or story arc) in the story, or in all your stories if you tick *Every story*.
+**Relationships** on a character sheet say how they relate to others. Below your own rows, *On other sheets* shows what other characters' sheets say about this one: press *Add the other side* to answer, and "✓ both sides" marks the pairs that already have both. With three or more rows, choose *A–Z* or *Custom* and drag the ⠿ grip (or use ↑ ↓) to put them in your own order.
+
+![Relationships seen from both sides](tutorial/rels.png)
+
+**Your own fields** sit under the tags: press *+ Add your own field* to add fields like Magic, Rank or Born, as one line, longer text, a choice list, a number or a date. They appear on every character (or place, note, chapter or story arc, or on the story overview) in the story, or in all your stories if you tick *Every story*.
 
 ![Your own fields on a character sheet](tutorial/fields.png) Hints under each field explain what it's for; Options → Display → Field hints makes them smaller or hides them.
 
@@ -169,6 +173,12 @@ The Tags tab shows all of them, how often they're used and what they're used on.
 
 ![Version history](tutorial/history.png)
 
+When a stage of work is done, **Trim…** in Version history thins out the versions you no longer need: keep one per day, one per week, or only the named ones and the latest. Story ▾ → *Trim version history…* does the same for every chapter, or for the chapters ticked in Select mode. Quire tells you how many versions go and asks first.
+
+**Read-through** (Story ▾ → Read through) shows the whole manuscript as one read-only text, the way a reader meets it. Select words and press *Comment*: the comment lands in that chapter, ready for the next revision.
+
+![Reading the whole manuscript, with a comment being added](tutorial/read.png)
+
 ## 12. Stats
 
 Stats covers the whole story: manuscript length against your target, writing pace and streak, chapter lengths, draft status, point of view, cast presence, settings, story arc coverage and a story timeline. The switch at the bottom changes the level of detail, from *Basic* to *In depth*, which adds sentence rhythm, openers, punctuation, repeated phrases and a narration check.
@@ -178,6 +188,8 @@ Stats covers the whole story: manuscript length against your target, writing pac
 The **Story timeline** puts your chapters in story order. Scenes with their own time appear indented under their date, and flashbacks are marked, so a flashback inside a chapter shows where it belongs without changing the chapter's word counts.
 
 ![The Story timeline with a flashback scene](tutorial/timeline.png)
+
+In depth, **paragraph density** for the whole manuscript lists the walls of text: places where three or more complex or dense paragraphs come in a row. Pick a chapter to see every paragraph as a dot. The **narration check** flags chapters whose sentences outside dialogue don't match their Narration setting; if a chapter is fine as it is (a text-message exchange, say), press *This is fine*.
 
 **Voices** compares how your viewpoint characters narrate: their sentence length, favorite words and phrases, the senses they lean on, and whether a voice drifts from chapter to chapter. Senses are counted per 1,000 words; open *Words counted* to see which words counted, and *Your sense words…* to add your own, like a smell that runs through your story. Mark who says a line of dialogue with the *Who says this* button, and Voices compares how your characters speak too. Only lines you mark count; Quire never guesses a speaker.
 
@@ -202,7 +214,7 @@ Everything is in **Options**. This is the whole menu, laid out in three columns:
 - **While you write,** Quire keeps your work in the browser's storage, so a closed tab loses nothing.
 - **Save file** (Ctrl+S) writes everything into `quire.html` itself. **The file is your real copy:** keep it with your writing and back it up like any document. In Chrome and Edge you choose the file once and later saves overwrite it. Firefox and Safari download an updated copy each time, by default into your Downloads folder. To save over your Quire file in Firefox, open *Settings → General → Files and Applications* and turn on **Always ask you where to save files**. Each Save file then asks where to put it: choose your Quire file and confirm that you want to replace it. Firefox remembers the folder. A reminder nudges you if work has gone unsaved for a while.
 - **Backups** (Options → Backup) save one story or all of them as a `.json` file, which any copy of Quire can restore.
-- **Encryption** (Options → Backup, optional) locks backups and the saved file with a password. If you forget it, nobody can recover the writing, so keep it safe.
+- **Encryption** (Options → Backup, optional) locks backups and the saved file with a password, and the copy Quire keeps in the browser too. If you forget it, nobody can recover the writing, so keep it safe.
 
 ## 15. Bringing writing in and out
 

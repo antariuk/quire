@@ -348,6 +348,34 @@ button.chip:hover{border-color:var(--pencil)}
 /* relationships */
 .rels{display:flex;flex-direction:column;gap:8px}
 .relrow{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr) auto;gap:8px;align-items:center}
+.relrow.mv{grid-template-columns:auto minmax(0,180px) minmax(0,1fr) auto}
+.rel-act{display:flex;gap:2px;align-items:center}
+.rel-act .btn[data-act="rel-mv"]{min-width:var(--h-m);padding:0 6px}
+.rel-grip{border:0;background:none;color:var(--ink-2);cursor:grab;touch-action:none;font-size:16px;line-height:1;padding:4px 2px;min-height:var(--h-m)}
+.relrow.dragging{opacity:.55}
+.relrow.drop-before{box-shadow:0 -2px 0 var(--pencil)}
+.relrow.drop-after{box-shadow:0 2px 0 var(--pencil)}
+.rel-tools{display:flex;align-items:center;gap:8px}
+.rel-tools .seg-toggle{margin-left:0}
+.rel-back{display:flex;flex-direction:column;gap:6px;margin-top:6px;padding-top:10px;border-top:1px dashed var(--rule)}
+.relback-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:14px}
+.rel-how{min-width:0;overflow-wrap:anywhere}
+.rel-both{font-size:12.5px;color:var(--ok)}
+.trim-opts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.read-title{font-family:var(--f-display);font-style:italic;font-weight:400;font-size:calc(30px * var(--ts));text-align:center;margin:18px 0 4px}
+.read-note{text-align:center;margin:0 auto 18px;max-width:40em}
+.read-ch{margin:0 0 28px}
+.read-h{display:flex;flex-direction:column;align-items:center;gap:2px;margin:26px 0 10px;text-align:center}
+.read-h h3{font-family:var(--f-display);font-weight:400;font-size:calc(22px * var(--ts));margin:0}
+.read-body{font-size:calc(18px * var(--ts));line-height:1.8;min-height:0;padding-top:4px}
+.read-body mark.spk,.read-body mark.ptag{background:none;border:0;text-decoration:none}
+.read-cmt{position:fixed;z-index:45;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.read-q{font-style:italic}
+#index.sb-compact #tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+#index.sb-compact #tabs .tab{min-width:0;padding-inline:10px}
+#index.sb-compact #tabs .tab > span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.trim-opts .check,.dlg .check.wrap{align-items:flex-start;white-space:normal;min-width:0;overflow-wrap:anywhere}
+.trim-opts .check input,.dlg .check.wrap input{margin-top:2px;flex:none}
 
 /* character arc */
 .patterns{display:flex;flex-wrap:wrap;gap:6px}
@@ -467,6 +495,10 @@ button.chip:hover{border-color:var(--pencil)}
 .narr-row.warn{border-color:color-mix(in oklab, var(--warn) 60%, transparent);background:color-mix(in oklab, var(--warn) 8%, transparent)}
 .narr-row .btn{margin-left:-10px}
 .narr-ex{font-family:var(--f-display);font-style:italic;color:var(--ink-2)}
+.narr-sep{font-style:normal}
+.walls{margin:6px 0 10px;padding-left:1.4em;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.walls .muted{overflow-wrap:anywhere}
+.narr-row > .btn[data-act="narr-ok"]{margin-left:-10px}
 .narr-ok{color:var(--ok);font-size:13.5px;margin:0}
 .dots{display:flex;flex-wrap:wrap;gap:4px;padding:2px 0}
 .dots i{width:12px;height:12px;border-radius:50%;cursor:pointer;box-shadow:inset 0 0 0 1px color-mix(in oklab, var(--ink) 12%, transparent)}
@@ -1147,8 +1179,11 @@ mark.hs.cur{background:var(--hi);color:var(--on-ink);box-shadow:none}
   .mark{font-size:26px}
   .mark-icon{width:32px;height:32px}
   .pair{grid-template-columns:1fr}
-  .relrow{grid-template-columns:1fr auto}
+  .relrow{grid-template-columns:minmax(0,1fr) auto}
   .relrow input{grid-column:1/-1;grid-row:2}
+  .relrow.mv{grid-template-columns:auto minmax(0,1fr) auto}
+  .relrow.mv input{grid-column:2/-1}
+  .relrow select{min-width:0;width:100%}
   .tally{grid-template-columns:1fr 1fr}
   .bar-row{grid-template-columns:minmax(0,7rem) minmax(0,1fr) 4.5rem}
 }
@@ -1430,7 +1465,9 @@ mark.spk.on,mark.spk.hl{background:var(--hi-wash)}
           <button data-menu="dup-story" data-needs-story>Duplicate this story</button>
           <button data-menu="del-story" data-needs-story class="menu-danger">Delete this story…</button>
           <button data-menu="bin" id="binItem">Trash</button>
+          <button data-menu="read" data-needs-story>Read through</button>
           <button data-menu="milestones">Milestones</button>
+          <button data-menu="hist-trim" data-needs-story>Trim version history…</button>
           <hr class="menu-sep">
           <button data-menu="replace" data-needs-story>Find and replace…</button>
           <button data-menu="import" data-needs-story>Import chapters…</button>
@@ -1482,6 +1519,7 @@ mark.spk.on,mark.spk.hl{background:var(--hi-wash)}
         <label class="menu-check"><input type="checkbox" id="stColorsItem" data-toggle="stcolors"><span>Color chapters by status <span class="muted">Chapter lists show each chapter’s status as a color, with a strip of the whole manuscript on top.</span></span></label>
         <label class="menu-check"><input type="checkbox" id="chipHiItem" data-toggle="chiphi"><span>Highlight characters, places and beats <span class="muted">Bold, colored name chips on chapters and story arcs, easier to spot.</span></span></label>
         <button data-menu="th-arrange">Buttons above the text…</button>
+        <button data-menu="sb-cats" data-needs-story>Sidebar categories…</button>
         <hr class="menu-sep menu-sep-soft">
         <div class="menu-row stack theme-row"><span>Theme</span><div class="seg-toggle" role="group" aria-label="Cool themes"><button data-set="theme" data-v="light">Light</button><button data-set="theme" data-v="twilight">Twilight</button><button data-set="theme" data-v="dark">Dark</button></div><div class="seg-toggle" role="group" aria-label="Warm themes, easier on the eyes"><button data-set="theme" data-v="sepia">Sepia</button><button data-set="theme" data-v="lamplight">Lamplight</button><button data-set="theme" data-v="ember">Ember</button></div><div class="ct-row" id="ctRow" role="group" aria-label="Your own themes"></div></div>
         <hr class="menu-sep menu-sep-soft">
@@ -1514,7 +1552,8 @@ mark.spk.on,mark.spk.hl{background:var(--hi-wash)}
         <p class="menu-h">Chapter history</p>
         <div class="menu-row stack"><span>Snapshot after a pause in writing of</span><div class="seg-toggle" role="group" aria-label="Take a chapter snapshot after a pause of"><button data-set="hp" data-v="off">Off</button><button data-set="hp" data-v="30">30s</button><button data-set="hp" data-v="60">1m</button><button data-set="hp" data-v="120">2m</button><button data-set="hp" data-v="300">5m</button><button data-set="hp" data-v="600">10m</button></div></div>
         <hr class="menu-sep menu-sep-soft">
-        <label class="menu-check"><input type="checkbox" id="histThinItem" data-toggle="hist-thin"><span>Thin out old versions <span class="muted">Off keeps every version forever. On keeps all from the last day, then hourly, daily and weekly ones.</span></span></label>
+        <label class="menu-check"><input type="checkbox" id="histThinItem" data-toggle="hist-thin"><span>Thin out old versions <span class="muted">Off keeps every version forever. On keeps all from the last day, then hourly, daily and weekly ones, as chapters change.</span></span></label>
+        <div class="menu-row"><button class="btn small" data-menu="hist-thin-now" data-needs-story>Thin now</button><span class="muted">Applies that rule to every chapter of this story right away.</span></div>
         <label class="menu-check"><input type="checkbox" id="histFileItem" data-toggle="hist-file" checked><span>Include history in saved and downloaded files <span class="muted">Compressed. Off keeps the file smaller; the history then stays only in this browser.</span></span></label>
       </div>
     </details>
@@ -1720,12 +1759,12 @@ const F = {
     {k:'body', type:'rich', big:true, label:'Character notes', ph:'Backstory, scraps of dialogue, reference images.'}
   ],
   place: [
+    {k:'aka', label:'Also known as', type:'line', hint:'Other names for it, separated by commas: Baker Street, the rooms. Search and the cast check find the place by any of them.'},
     {placeTop:[
       {k:'placeType', label:'What kind of place', type:'line', ph:'Harbor town, starship bridge, grandmother’s kitchen'},
       {k:'look', label:'What it looks like', type:'text'},
       {k:'senses', label:'Sounds, smells, textures', type:'text'},
       {k:'significance', label:'Why it matters to the story', type:'text'}]},
-    {k:'aka', label:'Also known as', type:'line', hint:'Other names for it, separated by commas: Baker Street, the rooms. Search and the cast check find the place by any of them.'},
     {divider:true},
     {g:'Notes', focus:true},
     {k:'body', type:'rich', big:true, label:'Place notes', ph:'History, who lives here, reference images.'}
@@ -1747,12 +1786,13 @@ const flatFields = defs => defs.flatMap(d => d.placeTop ? flatFields(d.placeTop)
 const S = {
   entries:new Map(), bin:new Map(), projectId:null, kind:'chapter', openId:null, panel:'overview', q:'', view:'list',
   mode:'loading', loaded:false, confirm:null, col:null,
-  timers:{}, ver:{}, dirty:new Set(), inflight:0, chain:Promise.resolve(), err:'',
+  timers:{}, ver:{}, dirty:new Set(), inflight:0, chain:Promise.resolve(), err:'', cacheCrypt:null, cacheLocked:false,
   downloads:undefined, assets:undefined, base:{}, wc:new Map(), st:new Map(), rteRange:null, rteFor:null
 };
 const app = $('#app'), desk = $('#desk');
 const RM_PRESETS = ['5', '10', '30'];
 function remindOK(v){ const n = Math.round(+v); return v !== '' && v != null && Number.isFinite(n) && n >= 1 && n <= 480; }
+const SB_CATS = ['arc', 'chapter', 'character', 'place', 'note', 'tags'];
 function loadPrefs(){ try { return JSON.parse(localStorage.getItem('storybible.ui') || '{}') || {}; } catch { return {}; } }
 /* ---------- your own themes: four colors, the other shades worked out from them ---------- */
 const THEME_PRESETS = {light: ['Light', '#FAFBF8', '#1C2129', '#ECEEEA', '#A4313D'], twilight: ['Twilight', '#3F4659', '#EDE8DE', '#353B4D', '#F2A08F'], dark: ['Dark', '#1C1F24', '#E6E4DE', '#14161A', '#E5757F'],
@@ -1863,8 +1903,8 @@ $('#themeEd').addEventListener('keydown', ev => {
   if (ev.key === 'Enter' && ev.target.id === 'teName') { ev.preventDefault(); const s = $('#themeEd [data-te-act="save"]'); if (s && !s.disabled) s.click(); }
 });
 
-function savePrefs(){ try { localStorage.setItem('storybible.ui', JSON.stringify({sw:S.senseWords, tbo:S.thOrder, tbh:S.thHide, rf:S.refOn, rr:S.ref, cx:S.cardsFull, p:S.projectId, k:S.kind, tv:S.tagView, ts:S.tagSort, th:S.theme, sz:S.size, fo:S.focus, pw:S.pw, tw:S.tw, hp:S.histPause, ht:S.histThin, hf:S.histFile, wa:S.wordAll, wo:S.wordsOpen, ro:S.remindOn, rm:S.remindMin, cf:S.chFold, hn:S.hints, hc:S.chipHi, sa:S.splitAsk, sq:S.smartQ, qs:S.qStyle, sd:S.smartDash, se:S.smartEll, sm:S.sprintMin, sg:S.sprintGoal, ss:S.sprintSound, wf:S.webFonts, nv:S.nav, fx:S.focusX, ty:S.typewriter, rl:S.rdLevel, sl:S.statsLevel, tsp:S.tsSprint, tsw:S.tsWords, rd:S.rdOn, ind:!!S.indent, ao3:!!S.ao3, ptst:S.ptagStyle, skst:S.spkStyle, stc:!!S.stColors, eb:!!S.encBackups, ct:S.themes || [], wwo:!!S.watchOn, ww:S.watch || [], pb:!!S.progBar, o:S.openId || null, rx:[...(S.rdOff || [])]})); } catch {} }
-{ const pr = loadPrefs(); S.senseWords = pr.sw && typeof pr.sw === 'object' && !Array.isArray(pr.sw) ? pr.sw : null; /* cleaned where it's used */ S.tagView = pr.tv === 'list' ? 'list' : 'cloud'; S.tagSort = pr.ts === 'az' ? 'az' : 'count'; S.wordAll = !!pr.wa; S.wordsOpen = !!pr.wo; S.chFold = !!pr.cf; S.hints = ['full','subtle','off'].includes(pr.hn) ? pr.hn : 'subtle'; S.chipHi = !!pr.hc; S.splitAsk = pr.sa !== false; S.smartQ = pr.sq !== false; S.qStyle = ['en','de','fr'].includes(pr.qs) ? pr.qs : 'en'; S.smartDash = pr.sd !== false; S.smartEll = pr.se !== false; S.remindOn = pr.ro !== false; S.remindMin = remindOK(pr.rm) ? String(Math.round(+pr.rm)) : '30'; S.sprintMin = +pr.sm >= 1 && +pr.sm <= 480 ? String(Math.round(+pr.sm)) : '30'; S.sprintSound = pr.ss !== false; S.sprintGoal = +pr.sg > 0 ? +pr.sg : '';
+function savePrefs(){ try { localStorage.setItem('storybible.ui', JSON.stringify({sbh:S.sbHide, sbc:!!S.sbCompact, sw:S.senseWords, tbo:S.thOrder, tbh:S.thHide, rf:S.refOn, rr:S.ref, cx:S.cardsFull, p:S.projectId, k:S.kind, tv:S.tagView, ts:S.tagSort, th:S.theme, sz:S.size, fo:S.focus, pw:S.pw, tw:S.tw, hp:S.histPause, ht:S.histThin, hf:S.histFile, wa:S.wordAll, wo:S.wordsOpen, ro:S.remindOn, rm:S.remindMin, cf:S.chFold, hn:S.hints, hc:S.chipHi, sa:S.splitAsk, sq:S.smartQ, qs:S.qStyle, sd:S.smartDash, se:S.smartEll, sm:S.sprintMin, sg:S.sprintGoal, ss:S.sprintSound, wf:S.webFonts, nv:S.nav, fx:S.focusX, ty:S.typewriter, rl:S.rdLevel, sl:S.statsLevel, tsp:S.tsSprint, tsw:S.tsWords, rd:S.rdOn, ind:!!S.indent, ao3:!!S.ao3, ptst:S.ptagStyle, skst:S.spkStyle, stc:!!S.stColors, eb:!!S.encBackups, ct:S.themes || [], wwo:!!S.watchOn, ww:S.watch || [], pb:!!S.progBar, o:S.openId || null, rx:[...(S.rdOff || [])]})); } catch {} }
+{ const pr = loadPrefs(); S.sbHide = {}; if (pr.sbh && typeof pr.sbh === 'object' && !Array.isArray(pr.sbh)) for (const [k, v] of Object.entries(pr.sbh).slice(0, 500)) if (Array.isArray(v)) S.sbHide[k] = v.filter(x => SB_CATS.includes(x)); S.sbCompact = pr.sbc === true; S.senseWords = pr.sw && typeof pr.sw === 'object' && !Array.isArray(pr.sw) ? pr.sw : null; /* cleaned where it's used */ S.tagView = pr.tv === 'list' ? 'list' : 'cloud'; S.tagSort = pr.ts === 'az' ? 'az' : 'count'; S.wordAll = !!pr.wa; S.wordsOpen = !!pr.wo; S.chFold = !!pr.cf; S.hints = ['full','subtle','off'].includes(pr.hn) ? pr.hn : 'subtle'; S.chipHi = !!pr.hc; S.splitAsk = pr.sa !== false; S.smartQ = pr.sq !== false; S.qStyle = ['en','de','fr'].includes(pr.qs) ? pr.qs : 'en'; S.smartDash = pr.sd !== false; S.smartEll = pr.se !== false; S.remindOn = pr.ro !== false; S.remindMin = remindOK(pr.rm) ? String(Math.round(+pr.rm)) : '30'; S.sprintMin = +pr.sm >= 1 && +pr.sm <= 480 ? String(Math.round(+pr.sm)) : '30'; S.sprintSound = pr.ss !== false; S.sprintGoal = +pr.sg > 0 ? +pr.sg : '';
   S.cardsFull = pr.cx === true; S.thOrder = Array.isArray(pr.tbo) ? pr.tbo.filter(k => typeof k === 'string') : null; S.thHide = Array.isArray(pr.tbh) ? pr.tbh.filter(k => typeof k === 'string') : null; S.refOn = pr.rf === true; S.ref = typeof pr.rr === 'string' ? pr.rr : null; S.themes = themesClean(pr.ct); S.watchOn = pr.wwo === true; S.watch = wwClean(pr.ww); S.wwStamp = (S.wwStamp || 0) + 1;
   S.theme = ['light','twilight','dark','sepia','lamplight','ember'].includes(pr.th) || (typeof pr.th === 'string' && pr.th.startsWith('c:') && S.themes.some(x => 'c:' + x.id === pr.th)) ? pr.th : (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); S.size = ['s','l'].includes(pr.sz) ? pr.sz : 'm';
   S.pw = ['narrow','medium','wide','full'].includes(pr.pw) ? pr.pw : 'medium'; S.tw = ['narrow','medium','wide','full'].includes(pr.tw) ? pr.tw : 'medium'; S.focus = !!pr.fo;
@@ -1914,7 +1954,7 @@ new MutationObserver(() => {
 }).observe(root, {attributes:true, attributeFilter:['data-theme']});
 
 /* ---------- migration from the first version ---------- */
-const normTag = s => String(s ?? '').replace(/\s+/g, ' ').replace(/^#+/, '').trim().slice(0, 100);
+const normTag = s => String(s ?? '').replace(/\s+/g, ' ').trim().replace(/^#+/, '').trim().slice(0, 100);
 function textToHtml(t){
   return String(t || '').split(/\n{2,}/).map(p => p.trim()).filter(Boolean).map(p => `<p>${esc(p).replace(/\n/g, '<br>')}</p>`).join('');
 }
@@ -1929,7 +1969,7 @@ function migratePsych(e){
 function normEntry(e){
   const str = v => typeof v === 'string' ? v : typeof v === 'number' && Number.isFinite(v) ? String(v) : '';
   if ('title' in e && typeof e.title !== 'string') e.title = str(e.title);
-  for (const k of RICH[e.kind] || []) if (k in e && typeof e[k] !== 'string') e[k] = '';
+  for (const k of RICH[e.kind] || []) if (k in e) e[k] = typeof e[k] !== 'string' ? '' : nlFix(e[k]);
   if ('tags' in e && !(Array.isArray(e.tags) && e.tags.every(x => typeof x === 'string'))) e.tags = (Array.isArray(e.tags) ? e.tags : typeof e.tags === 'string' ? e.tags.split(',') : []).filter(x => typeof x === 'string').map(normTag).filter(Boolean);
   for (const k of ['povs', 'chars', 'places', 'tagRefs', 'arcPatterns']) if (k in e) e[k] = Array.isArray(e[k]) ? e[k].filter(x => typeof x === 'string') : [];
   const isObj = x => x && typeof x === 'object' && !Array.isArray(x);
@@ -1960,6 +2000,8 @@ function normEntry(e){
   if ('cfDefs' in e) { const ok = (Array.isArray(e.cfDefs) ? e.cfDefs : []).filter(d => d && typeof d === 'object' && /^[a-z0-9]{4,16}$/i.test(d.id) && CF_KINDS.includes(d.kind) && typeof d.label === 'string' && CF_TYPES[d.type]).slice(0, 80)
     .map(d => ({id: d.id, kind: d.kind, label: d.label.slice(0, 60), type: d.type, ...(d.type === 'choice' ? {opts: (Array.isArray(d.opts) ? d.opts : []).filter(x => typeof x === 'string' && x.trim()).map(x => x.trim().slice(0, 60)).slice(0, 60)} : {}), ...(d.all ? {all: true} : {})})); if (ok.length) e.cfDefs = ok; else delete e.cfDefs; }
   if ('cf' in e) { const o = {}; if (isObj(e.cf)) for (const [k, v] of Object.entries(e.cf).slice(0, 120)) if (/^[a-z0-9]{4,16}$/i.test(k) && (typeof v === 'string' || typeof v === 'number')) o[k] = String(v).slice(0, 5000); if (Object.keys(o).length) e.cf = o; else delete e.cf; }
+  if ('relSort' in e && e.relSort !== 'az') delete e.relSort;
+  if ('narrOk' in e) { const o = e.narrOk; if (isObj(o) && Number.isInteger(o.p1) && o.p1 >= 0 && Number.isInteger(o.p2) && o.p2 >= 0 && typeof o.n === 'string') e.narrOk = {p1: o.p1, p2: o.p2, n: o.n.slice(0, 60)}; else delete e.narrOk; }
   if ('relTags' in e) { const o = Object.create(null); if (isObj(e.relTags)) for (const [k, v] of Object.entries(e.relTags).slice(0, 2000)) if (k && k.length <= 120 && (v === 0 || v === 1)) o[k.toLowerCase()] = v; if (Object.keys(o).length) e.relTags = o; else delete e.relTags; }
 }
 function migrate(e){
@@ -2011,6 +2053,7 @@ const titleOf = e => e ? (e.title || (KINDS[e.kind] ? KINDS[e.kind].untitled : '
 const META = new Set(['due','docOpt','kind','project','id','title','portrait','portraitOn','portraitShape','role','pov','povs','narration','when','structure','unit','status','target','tension','order','measure','fmt','created','updated','arcInner','arcWorld','arcWant','arcNeed','arcCost','sortCharacter','sortPlace','sortChapter','sortNote','msName','msByline','msContact','msFont','msPaper','msImg']);
 function htmlText(h){
   return String(h || '')
+    .replace(/[ \t]*[\r\n]+[ \t]*/g, ' ')
     .replace(/<div class="embed"[^>]*>[\s\S]*?<\/div>/gi, ' ')
     .replace(/<(?:br|hr)\b[^>]*>/gi, '\n')
     .replace(/<\/(?:p|h\d|li|blockquote|div)>/gi, '\n')
@@ -2159,13 +2202,27 @@ function status(){
   el.textContent = 'Changes stay in this tab';
 }
 /* storage for the standalone file, one notebook per file location: IndexedDB, else localStorage, else memory only */
+/* With "Encrypt this file" on, the browser's copy is encrypted too, with the same key (purpose "cache" in the sealed header).
+   Writes run one at a time, so changing the key can't race a write. */
+const cacheSeal = async (v, key = S.cacheCrypt) => key ? {format: 'quire-cache', env: await qeSeal(JSON.stringify(v), key, 'cache')} : v;
+async function cacheOpen(v, key = S.cacheCrypt){
+  if (!v || v.format !== 'quire-cache') return v;
+  if (key) store.sealed = true; else throw {code: 'cachekey'};
+  const h = v.env, {salt, iv} = qeCheck(h);
+  if (h.what !== 'cache' || h.iter !== key.iter || b64e(salt) !== b64e(key.salt)) throw {code: 'cachekey'};
+  let body; try { body = new Uint8Array(await crypto.subtle.decrypt({name: 'AES-GCM', iv, additionalData: qeAAD(h)}, key.key, b64d(h.data))); } catch { throw {code: 'cachekey'}; }
+  if (h.z) { const un = await qeZip(body, true); if (!un) throw {code: 'browser'}; body = un; }
+  return JSON.parse(new TextDecoder().decode(body));
+}
 const store = {
-  kind: null, db: null, data: null, key: '',
+  kind: null, back: null, db: null, data: null, key: '', q: Promise.resolve(), plain: false, sealed: false,
+  run(fn){ const p = this.q.then(fn, fn); this.q = p.catch(() => {}); return p; },
+  idle(){ return this.q; },
   async open(name){
     try {
       if (!window.indexedDB) throw 0;
       this.db = await new Promise((res, rej) => { const r = indexedDB.open(name, 2); r.onupgradeneeded = () => { for (const st of ['entries', 'meta', 'history']) if (!r.result.objectStoreNames.contains(st)) r.result.createObjectStore(st); }; r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); r.onblocked = () => rej(new Error('blocked')); });
-      this.kind = 'idb';
+      this.kind = this.back = 'idb';
       await this.put('meta', 'probe', 1); await this.del('meta', 'probe');
       return;
     } catch { this.db = null; }
@@ -2174,18 +2231,32 @@ const store = {
       const raw = localStorage.getItem(this.key);
       this.data = raw ? JSON.parse(raw) : {entries:{}, meta:{}};
       if (!this.data.history) this.data.history = {};
-      this.kind = 'ls'; localStorage.setItem(this.key, JSON.stringify(this.data));
+      this.kind = this.back = 'ls'; localStorage.setItem(this.key, JSON.stringify(this.data));
       return;
     } catch {}
     this.kind = 'mem'; this.data = {entries:{}, meta:{}, history:{}};
   },
   tx(st, mode, fn){ return new Promise((res, rej) => { const t = this.db.transaction(st, mode), os = t.objectStore(st), out = fn(os); t.oncomplete = () => res(out); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error); }); },
-  async all(st){
+  async raw(st){
     if (this.kind === 'idb') { const r = await this.tx(st, 'readonly', os => ({v: os.getAll(), k: os.getAllKeys()})); return r.k.result.map((key, i) => [key, r.v.result[i]]); }
     return Object.entries(this.data[st] || {});
   },
-  async put(st, key, val){ if (this.kind === 'idb') return this.tx(st, 'readwrite', os => { os.put(val, key); }); (this.data[st] = this.data[st] || {})[key] = val; this.persist(); },
-  async del(st, key){ if (this.kind === 'idb') return this.tx(st, 'readwrite', os => { os.delete(key); }); if (this.data[st]) delete this.data[st][key]; this.persist(); },
+  async all(st){ const out = []; for (const [k, v] of await this.raw(st)) { if (S.cacheCrypt && !(v && v.format === 'quire-cache')) this.plain = true; out.push([k, await cacheOpen(v)]); } return out; },
+  put(st, key, val){ return this.run(async () => { const v = await cacheSeal(val); if (this.kind === 'idb') return this.tx(st, 'readwrite', os => { os.put(v, key); }); (this.data[st] = this.data[st] || {})[key] = v; this.persist(); }); },
+  del(st, key){ return this.run(async () => { if (this.kind === 'idb') return this.tx(st, 'readwrite', os => { os.delete(key); }); if (this.data[st]) delete this.data[st][key]; this.persist(); }); },
+  /* re-seal everything with another key (or none), all in one transaction */
+  rekey(next){ return this.run(async () => {
+    const sts = ['entries', 'meta', 'history'], snap = {};
+    for (const st of sts) { snap[st] = []; for (const [k, v] of await this.raw(st)) snap[st].push([k, await cacheSeal(await cacheOpen(v), next)]); }
+    if (this.kind === 'idb') await new Promise((res, rej) => { const t = this.db.transaction(sts, 'readwrite'); for (const st of sts) { const os = t.objectStore(st); os.clear(); for (const [k, v] of snap[st]) os.put(v, k); } t.oncomplete = res; t.onerror = t.onabort = () => rej(t.error); });
+    else if (this.kind === 'ls') { for (const st of sts) this.data[st] = Object.fromEntries(snap[st]); this.persist(); }
+    S.cacheCrypt = next || null; this.plain = false;
+  }); },
+  clear(){ return this.run(async () => {
+    if (this.back === 'idb' && this.db) await new Promise((res, rej) => { const t = this.db.transaction(['entries', 'meta', 'history'], 'readwrite'); for (const st of ['entries', 'meta', 'history']) t.objectStore(st).clear(); t.oncomplete = res; t.onerror = t.onabort = () => rej(t.error); });
+    else if (this.back === 'ls' && this.key) localStorage.removeItem(this.key);
+    this.data = {entries: {}, meta: {}, history: {}};
+  }); },
   persist(){ if (this.kind === 'ls') localStorage.setItem(this.key, JSON.stringify(this.data)); }
 };
 /* A copy of an entry that works anywhere: clean HTML, images inlined as data instead of private uploads. */
@@ -2196,7 +2267,8 @@ async function portableEntry(e, cache){
   return b;
 }
 async function buildOfflineHTML(){
-  flushAll();
+  flushAll(); histFlushAll();
+  await S.chain; await Promise.all(Object.values(S.H).map(h => h.chain)); await store.idle();
   const cache = new Map(), entries = [];
   for (const e of [...S.entries.values(), ...S.bin.values()]) entries.push(await portableEntry(e, cache));
   const doc = new DOMParser().parseFromString(PRISTINE, 'text/html');
@@ -2227,12 +2299,41 @@ async function saveFile(){
     try {
       if (!S.fileHandle) S.fileHandle = await window.showSaveFilePicker({suggestedName: fileName(), types:[{description:'Quire notebook', accept:{'text/html':['.html', '.htm']}}]});
       const w = await S.fileHandle.createWritable(); await w.write(html); await w.close();
-      S.fileDirty = false; S.fileSavedAt = Date.now(); S.fileSavedVia = 'file'; status(); toast(`Saved to ${S.fileHandle.name}.`); return;
+      S.fileDirty = false; S.fileSavedAt = Date.now(); S.fileSavedVia = 'file'; status(); toast(`Saved to ${S.fileHandle.name}.`); await cacheAfterSave(); return;
     } catch (err) { if (err && err.name === 'AbortError') return; S.fileHandle = null; }
   }
   S.fileDirty = false; S.fileSavedAt = Date.now(); S.fileSavedVia = 'download'; status();
   anchorDownload(fileName(), html);
   toast('Downloaded an updated copy of this file. Replace the old file with it so all your notes stay in one place.');
+  await cacheAfterSave();
+}
+async function cacheAfterSave(){
+  if (S.mode !== 'file' || S.cacheLocked || (S.fileCrypt || null) === (S.cacheCrypt || null)) return;
+  try { await store.rekey(S.fileCrypt || null); try { localStorage.removeItem(RESCUE_KEY()); } catch {} }
+  catch { cacheNotice(S.fileCrypt ? 'The file was saved, but Quire couldn’t encrypt this browser’s copy with the new password.' : 'The file was saved, but Quire couldn’t update this browser’s copy.'); }
+}
+function cacheNotice(msg, locked){
+  const n = $('#notice'); n.innerHTML = `<b>This browser’s copy needs attention.</b> ${esc(msg)}${locked ? ' <button class="btn small" data-act="cache-unlock">Unlock it…</button> <button class="btn small ghost" data-act="cache-clear">Delete it…</button>' : ''}`; n.hidden = false;
+}
+/* The browser's copy is sealed with another password than this file (a newer copy changed it, or turned encryption on). Ask for it. */
+async function cacheUnlock(){
+  let env = null; for (const st of ['entries', 'meta', 'history']) { for (const [, v] of await store.raw(st)) if (v && v.format === 'quire-cache') { env = v.env; break; } if (env) break; }
+  if (!env) return false;
+  for (let err = ''; ; ) {
+    const pw = await askPassword({title: 'Unlock this browser’s copy', intro: 'This browser keeps a copy of this notebook that’s locked with a different password than this file. It may hold newer work, for example after you changed the password or turned encryption on in a newer copy. Enter that password to bring the work in.', err});
+    if (!pw) return false;
+    try { const r = await qeOpen(env, pw); S.cacheCrypt = r.key; return true; } catch { err = 'That password doesn’t open it.'; }
+  }
+}
+async function cacheReload(){
+  if (S.fileDirty && !await askChoice({title: 'Unlock and reload?', html: '<p>Unlocking reloads the notebook. Changes made in this tab since it opened are lost unless you use Save file first.</p>', choices: [{label: 'Reload and unlock', value: true, primary: true}, {label: 'Cancel', value: null}]})) return;
+  S.fileDirty = false; location.reload();
+}
+async function cacheClear(){
+  const ok = await askChoice({title: 'Delete this browser’s copy?', html: '<p>It’s locked with a different password and may hold work that isn’t in this file. Deleting it can’t be undone. If you have a newer copy of the file, open that instead: it unlocks this browser’s copy with its password.</p>', choices: [{label: 'Keep it', value: null, primary: true}, {label: 'Delete it', value: true}]});
+  if (!ok) return;
+  try { await store.clear(); localStorage.removeItem(RESCUE_KEY()); } catch { toast('Quire couldn’t delete the browser copy.'); return; }
+  S.fileDirty = false; location.reload();
 }
 let toastT;
 function toast(msg, action){
@@ -2473,6 +2574,14 @@ const BLOCK = {P:'p', DIV:'p', PRE:'p', SECTION:'p', ARTICLE:'p', H1:'h2', H2:'h
 const INLINE = {B:'b', STRONG:'b', I:'i', EM:'i', CITE:'i', U:'u', S:'s', STRIKE:'s', DEL:'s', A:'a'};
 const DROP = new Set(['SCRIPT','STYLE','TEMPLATE','OBJECT','EMBED','SVG','MATH','NOSCRIPT','TITLE','META','LINK','HEAD','BUTTON','INPUT','SELECT','TEXTAREA','FORM','CANVAS','VIDEO','AUDIO','SOURCE','PICTURE']);
 /* Clean HTML to Quire's allowlist. Loose text is put into paragraphs, except for a pasted fragment (inline), which joins the line it's pasted into. */
+/* Line breaks typed into the HTML source (usually from pasted text) show as spaces; store them as spaces too. */
+function nlFix(h){
+  if (typeof h !== 'string' || !/[\r\n]/.test(h)) return h;
+  const t = document.createElement('template'); t.innerHTML = h; let ch = false;
+  const w = document.createTreeWalker(t.content, NodeFilter.SHOW_TEXT), list = []; let n; while ((n = w.nextNode())) if (/[\r\n]/.test(n.nodeValue)) list.push(n);
+  for (const x of list) { ch = true; const v = x.nodeValue.replace(/[ \t]*[\r\n]+[ \t]*/g, ' '); if (!v.trim() && x.parentNode === t.content) x.remove(); else x.nodeValue = v; }
+  return ch ? t.innerHTML : h;
+}
 function sanitize(html, inline){
   const tpl = document.createElement('template'); tpl.innerHTML = String(html || '');
   const out = document.createElement('div'); clean(tpl.content, out);
@@ -2493,7 +2602,7 @@ function sanitize(html, inline){
 }
 function clean(src, dst){
   for (const n of [...src.childNodes]) {
-    if (n.nodeType === 3) { dst.appendChild(document.createTextNode(n.nodeValue)); continue; }
+    if (n.nodeType === 3) { dst.appendChild(document.createTextNode(n.nodeValue.replace(/[ \t]*[\r\n]+[ \t]*/g, ' '))); continue; }
     if (n.nodeType !== 1) continue;
     const tag = n.tagName.toUpperCase();
     if (DROP.has(tag)) continue;
@@ -2654,6 +2763,20 @@ function jumpTo(text){
   const pick = all.find(e => titleOf(e).toLowerCase() === t) || all.find(e => titleOf(e).toLowerCase().startsWith(t)) || all.find(e => titleOf(e).toLowerCase().includes(t));
   if (pick && (!cur || pick.id !== cur.id)) open(pick.id); else if (!pick) toast(`Nothing in this story is called “${String(text).trim()}”.`);
 }
+/* Sidebar categories each story can hide (Options → Display → Sidebar categories); the open one always shows */
+const sbHidden = () => new Set((S.sbHide && S.sbHide[S.projectId]) || []);
+async function sbCats(){
+  const p = project(); if (!p) return; const hid = sbHidden(), name = k => k === 'tags' ? 'Tags' : KINDS[k].plural;
+  const r = await askChoice({title: 'Sidebar categories', html: `<p class="dlg-note">Choose which categories the sidebar shows for “${esc(p.title || 'Untitled story')}”, to leave more room for the list. Hidden ones are still a click away with Go to (Ctrl+K), Search and links, and show while one of their entries is open.${S.nav === 'tabs' ? ' This applies to the sidebar layout (Options → Display → Navigation).' : ''}</p>
+    <div class="trim-opts">${SB_CATS.map(k => `<label class="check"><input type="checkbox" data-sbcat="${k}"${hid.has(k) ? '' : ' checked'}> ${esc(name(k))}</label>`).join('')}</div>
+    <label class="check wrap"><input type="checkbox" id="sb-compact"${S.sbCompact ? ' checked' : ''}> Compact: two columns <span class="muted">(every story)</span></label>`,
+    choices: [{label: 'Save', value: 'ok', primary: true}, {label: 'Cancel', value: null}],
+    read: b => ({hide: [...b.querySelectorAll('[data-sbcat]')].filter(x => !x.checked).map(x => x.dataset.sbcat), compact: b.querySelector('#sb-compact').checked})});
+  if (!r || !r.form) return;
+  let hide = r.form.hide; if (hide.length === SB_CATS.length) { hide = hide.filter(k => k !== 'chapter'); toast('Chapters stay, so the sidebar always shows something.'); }
+  S.sbHide = {...(S.sbHide || {})}; if (hide.length) S.sbHide[p.id] = hide; else delete S.sbHide[p.id];
+  S.sbCompact = r.form.compact; savePrefs(); renderIndex();
+}
 function renderIndex(){
   renderTopTabs();
   if (S.nav === 'tabs') { $('#index').hidden = true; if (S.panel === 'list' && !S.openId) lpRefresh(); return; }
@@ -2661,7 +2784,8 @@ function renderIndex(){
   idx.hidden = !S.projectId;
   if (!S.projectId) return;
   const tags = tagIndex(false);
-  $('#tabs').innerHTML = ['arc', 'chapter', 'character', 'place', 'note', 'tags'].map(k => {
+  const hid = sbHidden(), oe = S.openId && S.entries.get(S.openId); idx.classList.toggle('sb-compact', !!S.sbCompact);
+  $('#tabs').innerHTML = SB_CATS.filter(k => !hid.has(k) || k === S.kind || (oe && oe.kind === k)).map(k => {
     const label = k === 'tags' ? 'Tags' : KINDS[k].plural, n = k === 'tags' ? tags.size : inStory(k).length;
     return `<button class="tab" data-act="kind" data-kind="${k}" aria-pressed="${k === S.kind && !S.q}"><span>${label}</span><span class="tab-n">${n}</span></button>`;
   }).join('');
@@ -2716,6 +2840,7 @@ function renderDesk(){
   if (!S.loaded) { desk.innerHTML = '<div class="loading">Opening your notebook…</div>'; return; }
   if (S.panel === 'bin' && !S.openId) { desk.innerHTML = binHTML(); focusGuard(); return; }
   if (S.panel === 'milestones' && !S.openId) { desk.innerHTML = msHTML(); focusGuard(); return; }
+  if (S.panel === 'read' && !S.openId) { desk.innerHTML = readHTML(); focusGuard(); return; }
   if (!projects().length) { desk.innerHTML = emptyHTML(); focusGuard(); return; }
   const e = S.openId && S.entries.get(S.openId);
   if (e && e.project === S.projectId) { desk.innerHTML = editorHTML(e); if (e.kind === 'chapter') { histPrime(e, activeDraft(e)); if (S.mg && S.mg.ch === e.id) mgRender(); else if (S.dp && S.dp.ch === e.id) draftPanelOpen(e); else { S.mg = null; S.dp = null; } } else { S.mg = null; S.dp = null; } }
@@ -3023,7 +3148,8 @@ function tRelabel(p){
 
 /* ---------- your own fields: Magic, Rank, Accent… on characters, places, notes, chapters and story arcs ----------
    Each story keeps the definitions (so they travel with the file); a field for every story is copied into each one. Values live on the entries. */
-const CF_KINDS = ['character', 'place', 'note', 'chapter', 'arc'];
+const CF_KINDS = ['character', 'place', 'note', 'chapter', 'arc', 'project'];
+const cfK = k => k === 'project' ? {one: 'story overview', plural: 'Story overviews'} : KINDS[k];
 const CF_TYPES = {line: 'One line', text: 'Longer text', choice: 'Choice list', number: 'Number', date: 'Date'};
 const cfDefs = (kind, p = project()) => (p && Array.isArray(p.cfDefs) ? p.cfDefs : []).filter(d => d.kind === kind);
 function cfAllDefs(){ const seen = new Map(); for (const p of projects()) for (const d of p.cfDefs || []) if (d.all && !seen.has(d.id)) seen.set(d.id, {...d}); return [...seen.values()]; }
@@ -3036,13 +3162,13 @@ function cfHTML(e){
       : d.type === 'date' ? `<input ${a} type="date" value="${esc(x)}">`
       : `<input ${a} value="${esc(x)}" autocomplete="off">`; };
   return `<section class="cf" id="cfBox" aria-label="Your fields">${defs.length ? `<div class="fgrid">${defs.map(d => `<div class="field"><label class="lab" for="cf-${esc(d.id)}">${esc(d.label)}</label>${ctl(d)}</div>`).join('')}</div>` : ''}
-    <p class="cf-edit"><button class="link-btn" data-act="cf-edit" data-kind="${e.kind}">${defs.length ? `Edit your ${esc(KINDS[e.kind].one)} fields…` : `+ Add your own field to ${esc(KINDS[e.kind].plural.toLowerCase())}…`}</button></p></section>`;
+    <p class="cf-edit"><button class="link-btn" data-act="cf-edit" data-kind="${e.kind}">${defs.length ? `Edit your ${esc(cfK(e.kind).one)} fields…` : `+ Add your own field to ${esc(cfK(e.kind).plural.toLowerCase())}…`}</button></p></section>`;
 }
 async function cfEdit(kind){
   const p = project(); if (!p || !CF_KINDS.includes(kind)) return;
-  const old = cfDefs(kind), K = KINDS[kind];
+  const old = cfDefs(kind), K = cfK(kind);
   const row = (d = {id: '', label: '', type: 'line', opts: [], all: false}) => `<div class="cf-r" data-id="${esc(d.id)}"><input class="cf-l" value="${esc(d.label)}" placeholder="Field name, like Magic" maxlength="60" aria-label="Field name"><select class="cf-t" aria-label="Kind of field">${Object.entries(CF_TYPES).map(([k, l]) => `<option value="${k}"${k === d.type ? ' selected' : ''}>${l}</option>`).join('')}</select><input class="cf-o" value="${esc((d.opts || []).join(', '))}" placeholder="Choices, separated by commas" aria-label="Choices"${d.type === 'choice' ? '' : ' hidden'}><label class="check cf-all"><input type="checkbox"${d.all ? ' checked' : ''}> Every story</label><button type="button" class="btn small ghost" data-cf-del aria-label="Delete this field">×</button></div>`;
-  const pending = askChoice({title: `Your ${K.one} fields`, html: `<p class="dlg-note">Fields you add show on every ${esc(K.one)} in “${esc(p.title || 'Untitled story')}”, under the tags. Tick <b>Every story</b> to add the field to your other stories too, and to new ones.</p><div class="cf-rows">${(old.length ? old : [undefined]).map(d => row(d)).join('')}</div><button type="button" class="btn small" data-cf-add>+ Add a field</button>`,
+  const pending = askChoice({title: `Your ${K.one} fields`, html: `<p class="dlg-note">${kind === 'project' ? `Fields you add show on the overview of “${esc(p.title || 'Untitled story')}”, under the tags.` : `Fields you add show on every ${esc(K.one)} in “${esc(p.title || 'Untitled story')}”, under the tags.`} Tick <b>Every story</b> to add the field to your other stories too, and to new ones.</p><div class="cf-rows">${(old.length ? old : [undefined]).map(d => row(d)).join('')}</div><button type="button" class="btn small" data-cf-add>+ Add a field</button>`,
     choices: [{label: 'Save', value: 'ok', primary: true}, {label: 'Cancel', value: null}],
     read: box => [...box.querySelectorAll('.cf-r')].map(r => ({id: r.dataset.id || shortId(), kind, label: r.querySelector('.cf-l').value.trim().slice(0, 60), type: r.querySelector('.cf-t').value, opts: r.querySelector('.cf-o').value.split(',').map(x => x.trim()).filter(Boolean).slice(0, 60), all: r.querySelector('.cf-all input').checked})).filter(d => d.label)});
   const box = $('#dlg'), ac = new AbortController();
@@ -3055,7 +3181,7 @@ async function cfEdit(kind){
   for (const d of old) if (!ids.has(d.id)) gone.push([d, projects()]);
   for (const d of old) { const n = now.find(x => x.id === d.id); if (d.all && n && !n.all) gone.push([d, projects().filter(x => x.id !== p.id)]); }
   const hit = [];
-  for (const [d, ps] of gone) for (const q of ps) for (const e of S.entries.values()) if (e.project === q.id && e.cf && e.cf[d.id]) hit.push([e, d]);
+  for (const [d, ps] of gone) for (const q of ps) for (const e of S.entries.values()) if ((e.project === q.id || e.id === q.id) && e.cf && e.cf[d.id]) hit.push([e, d]);
   if (hit.length) {
     const names = [...new Set(hit.map(([, d]) => `“${d.label}”`))].join(', ');
     const ok = await askChoice({title: 'Delete what’s filled in?', html: `<p>${plural(hit.length, K.one)} ${hit.length === 1 ? 'has' : 'have'} something in ${names}. Saving deletes it. You can undo this right after.</p>`, choices: [{label: 'Delete and save', value: 'ok', primary: true}, {label: 'Keep editing later', value: null}]});
@@ -3177,13 +3303,40 @@ function tagsHTML(e){
 function relsHTML(e){
   const others = list('character').filter(c => c.id !== e.id);
   const rels = Array.isArray(e.rels) ? e.rels : [];
-  if (!others.length && !rels.length) return `<p class="hint">Add another character to this story to map how they relate.</p>`;
-  return rels.map((r, i) => `<div class="relrow">
+  const name = id => { const c = id && S.entries.get(id); return c ? titleOf(c) : ''; };
+  const back = others.filter(o => (o.rels || []).some(r => r.to === e.id)).sort((a, b) => titleOf(a).localeCompare(titleOf(b), undefined, {sensitivity: 'base'}));
+  if (!others.length && !rels.length && !back.length) return `<p class="hint">Add another character to this story to map how they relate.</p>`;
+  const az = e.relSort === 'az' && rels.length > 2, mv = !az && rels.length > 1;
+  const order = rels.map((r, i) => i);
+  if (az) order.sort((a, b) => { const x = name(rels[a].to), y = name(rels[b].to); return !x - !y || x.localeCompare(y, undefined, {sensitivity: 'base'}) || a - b; });
+  const head = rels.length > 2 ? `<div class="rel-tools"><span class="hint">Order</span><div class="seg-toggle" role="group" aria-label="Order of relationships"><button data-act="rel-sort" data-v="az" aria-pressed="${az}">A–Z</button><button data-act="rel-sort" data-v="" aria-pressed="${!az}">Custom</button></div></div>` : '';
+  const rows = order.map((i, k) => { const r = rels[i]; return `<div class="relrow${mv ? ' mv' : ''}" data-rel-row="${i}">${mv ? `<button type="button" class="rel-grip" data-rel-drag="${i}" aria-label="Drag to move, or use the arrows" title="Drag to move">⠿</button>` : ''}
       <select id="rel-${i}-to" data-rel="${i}" data-rf="to" aria-label="Character"><option value="">Choose a character…</option>${others.map(c => `<option value="${esc(c.id)}"${c.id === r.to ? ' selected' : ''}>${esc(titleOf(c))}</option>`).join('')}</select>
       <input id="rel-${i}-how" data-rel="${i}" data-rf="how" value="${esc(r.how)}" placeholder="How they relate" autocomplete="off" aria-label="How they relate">
-      <button class="btn ghost small" data-act="rel-del" data-i="${i}">Remove</button>
-    </div>`).join('') + (others.length ? `<div><button class="btn small" data-act="rel-add">Add relationship</button></div>` : '');
+      <span class="rel-act">${mv ? `<button type="button" class="btn ghost small" data-act="rel-mv" data-i="${i}" data-d="-1" aria-label="Move up"${k ? '' : ' disabled'}>↑</button><button type="button" class="btn ghost small" data-act="rel-mv" data-i="${i}" data-d="1" aria-label="Move down"${k < rels.length - 1 ? '' : ' disabled'}>↓</button>` : ''}<button class="btn ghost small" data-act="rel-del" data-i="${i}">Remove</button></span>
+    </div>`; }).join('');
+  const backHTML = back.length ? `<div class="rel-back"><span class="lab">On other sheets</span>${back.flatMap(o => (o.rels || []).filter(r => r.to === e.id).map(r => { const both = rels.some(x => x.to === o.id);
+      return `<div class="relback-row"><button class="chip" data-act="open" data-open="${esc(o.id)}">${esc(titleOf(o))}</button><span class="rel-how">${r.how ? `→ ${esc(r.how)}` : '<span class="muted">no description yet</span>'}</span>${both ? `<span class="rel-both" title="This sheet has a row for ${esc(titleOf(o))} too">✓ both sides</span>` : `<button class="btn small" data-act="rel-back" data-from="${esc(o.id)}">Add the other side</button>`}</div>`; })).join('')}</div>` : '';
+  return head + rows + (others.length ? `<div><button class="btn small" data-act="rel-add">Add relationship</button></div>` : '') + backHTML;
 }
+function relRender(e, focus){ const box = $('#rels'); if (!box) return; box.innerHTML = relsHTML(e); const l = $('#links'); if (l) l.innerHTML = linksHTML(e); if (focus) { const f = box.querySelector(focus); if (f) f.focus(); } }
+function relMove(e, from, to){
+  if (!Array.isArray(e.rels) || from === to || from < 0 || to < 0 || from >= e.rels.length || to >= e.rels.length) return;
+  const [r] = e.rels.splice(from, 1); e.rels.splice(to, 0, r); touch(e);
+}
+/* drag a relationship row by its grip; the arrows do the same on phones and keyboards */
+desk.addEventListener('pointerdown', ev => {
+  const g = ev.target.closest && ev.target.closest('[data-rel-drag]'); if (!g) return;
+  const e = current(); if (!e || !Array.isArray(e.rels)) return;
+  ev.preventDefault(); const box = $('#rels'), row = g.closest('.relrow'), rows = [...box.querySelectorAll('.relrow')], from = rows.indexOf(row); let to = from;
+  row.classList.add('dragging'); try { g.setPointerCapture(ev.pointerId); } catch {}
+  const rest = rows.filter(x => x !== row);
+  const mvh = m => { to = rest.filter(x => { const b = x.getBoundingClientRect(); return b.top + b.height / 2 < m.clientY; }).length;
+    rest.forEach((x, k) => { x.classList.toggle('drop-before', k === to && to !== from); x.classList.toggle('drop-after', k === rest.length - 1 && to === rest.length && to !== from); }); };
+  const up = () => { g.removeEventListener('pointermove', mvh); g.removeEventListener('pointerup', up); g.removeEventListener('pointercancel', up); rows.forEach(x => x.classList.remove('dragging', 'drop-before', 'drop-after'));
+    if (to !== from) { relMove(e, from, to); relRender(e, `.relrow:nth-of-type(${to + 1}) [data-rel-drag]`); } };
+  g.addEventListener('pointermove', mvh); g.addEventListener('pointerup', up); g.addEventListener('pointercancel', up);
+});
 
 /* character arc */
 function suggestPattern(e){
@@ -3607,6 +3760,7 @@ function overviewHTML(p){
     <input id="p-title" class="title-input" data-f="title" value="${esc(p.title)}" placeholder="Untitled story" aria-label="Story title" autocomplete="off">
     ${titleImgHTML(p)}
     <div class="field" id="tagfield">${tagsHTML(p)}</div>
+    ${cfHTML(p)}
     ${fieldsHTML(p, F.projectTop)}
     ${storyTimeHTML(p)}
     <h3 class="group">In this story</h3>
@@ -3870,6 +4024,40 @@ function open(id){
   S.kind = e.kind; S.openId = id; S.view = 'editor'; S.confirm = null; S.refNow = false; S.recent = [id, ...(S.recent || []).filter(x => x !== id)].slice(0, 8);
   savePrefs(); renderBar(); renderIndex(); renderDesk(); desk.scrollTop = 0; { const se = document.scrollingElement; if (se && se.scrollTop > desk.offsetTop) se.scrollTop = 0; }
 }
+/* ---------- read-through: the manuscript as one read-only text; comments land in their chapters ---------- */
+function readHTML(){
+  const p = project(), chs = manuscript(), labels = chapterLabels();
+  const top = `<div class="sheet-top"><button class="btn ghost" data-act="read-close">← Close</button><span class="eyebrow">Read-through</span>${chs.length > 1 ? `<select data-read-go aria-label="Go to a chapter"><option value="">Go to…</option>${chs.map(c => `<option value="${esc(c.id)}">${esc(labels.get(c.id) || 'Chapter')}: ${esc(titleOf(c))}</option>`).join('')}</select>` : ''}<span class="wc mono">${words(manuscriptWords(p.id))}</span></div>`;
+  if (!chs.length) return `<article class="sheet read">${top}<p class="hint">No chapters to read yet.</p></article>`;
+  return `<article class="sheet read" aria-label="Read-through of ${esc(p.title || 'Untitled story')}">${top}
+    <h2 class="read-title">${esc(p.title || 'Untitled story')}</h2>
+    <p class="hint read-note">The whole manuscript, read-only, in chapter order (drafts aren’t shown). Select words and press <b>Comment</b> to leave a note in that chapter.</p>
+    ${chs.map(c => `<section class="read-ch" id="rd-${esc(c.id)}"><div class="read-h"><span class="eyebrow">${esc(labels.get(c.id) || 'Chapter')}</span><h3>${esc(titleOf(c))}</h3><button class="link-btn" data-act="open" data-open="${esc(c.id)}">Edit this chapter</button></div>
+      <div class="rte-body read-body" data-read="${esc(c.id)}">${sanitize(c.body || '') || '<p class="hint">Nothing written yet.</p>'}</div></section>`).join('')}
+    <button type="button" class="btn small primary read-cmt" id="readCmt" data-act="read-cmt" hidden>Comment</button></article>`;
+}
+let readRange = null;
+document.addEventListener('selectionchange', () => {
+  const b = $('#readCmt'); if (!b) return;
+  const sel = getSelection(), r = sel.rangeCount && !sel.isCollapsed ? sel.getRangeAt(0) : null;
+  const body = r && (r.commonAncestorContainer.nodeType === 3 ? r.commonAncestorContainer.parentElement : r.commonAncestorContainer).closest('.read-body[data-read]');
+  if (!body || !sel.toString().trim()) { if (!b.matches(':focus')) b.hidden = true; return; }
+  readRange = r.cloneRange(); const rc = r.getBoundingClientRect();
+  b.hidden = false; b.style.top = `${Math.min(innerHeight - 44, Math.max(8, rc.bottom + 8))}px`; b.style.left = `${Math.min(innerWidth - 110, Math.max(8, rc.left))}px`;
+});
+async function readComment(){
+  const r = readRange, b = $('#readCmt'); if (b) b.hidden = true;
+  const body = r && (r.commonAncestorContainer.nodeType === 3 ? r.commonAncestorContainer.parentElement : r.commonAncestorContainer).closest('.read-body[data-read]');
+  const c = body && S.entries.get(body.dataset.read); if (!c || r.collapsed) return;
+  const res = await askChoice({title: `Comment in “${titleOf(c)}”`, html: `<p class="dlg-note read-q">“${esc(r.toString().replace(/\s+/g, ' ').trim().slice(0, 140))}”</p><label class="dlg-f"><span>Comment</span><textarea id="read-cmt-t" rows="3" maxlength="4000"></textarea></label>`,
+    choices: [{label: 'Add comment', value: 'ok', primary: true}, {label: 'Cancel', value: null}], read: x => x.querySelector('#read-cmt-t').value.trim()});
+  if (!res || !res.form || !body.isConnected) return;
+  const m = document.createElement('mark'); m.className = 'cmt'; m.dataset.c = res.form; m.title = res.form;
+  m.appendChild(r.extractContents()); for (const x of [...m.querySelectorAll('mark.cmt')]) x.replaceWith(...x.childNodes); r.insertNode(m);
+  const before = c.body, tk = tlKey(c.id, ''); histPrime(c, null); await histSnapshot(tk);
+  c.body = sanitize(body.innerHTML); touch(c); await histSnapshot(tk);
+  toast(`Comment added to “${titleOf(c)}”.`, {label: 'Undo', run: async () => { c.body = before; touch(c); await histSnapshot(tk); if (S.panel === 'read' && !S.openId) { const y = desk.scrollTop; renderDesk(); desk.scrollTop = y; } }});
+}
 function showPanel(panel){ histFlushAll(); histClosePanel(); S.panel = panel; S.openId = null; S.view = 'editor'; S.confirm = null; renderBar(); renderIndex(); renderDesk(); desk.scrollTop = 0; { const se = document.scrollingElement; if (se && se.scrollTop > desk.offsetTop) se.scrollTop = 0; } }
 function newEntry(kind, title){
   const e = {id:newId(), kind, project:S.projectId, title: title || '', created:Date.now(), tags:[]};
@@ -4021,6 +4209,7 @@ function storyMarkdown(p){
   for (const [k, label] of [['genre','Genre'], ['theme','Theme'], ['target','Target length']]) if (p[k]) L.push(`**${label}:** ${k === 'target' ? fmt(+p[k]) + ' words' : p[k]}  `);
   if ((p.tags || []).length) L.push(`*Tags: ${p.tags.join(', ')}*`);
   L.push('');
+  for (const d of cfDefs('project', p)) { const v = (p.cf || {})[d.id]; if (v) L.push(`**${d.label}:** ${v}`, ''); }
   if (p.body) L.push(htmlToMd(p.body), '');
   const nameOf = id => titleOf(S.entries.get(id));
   const labels = chapterLabels();
@@ -6077,7 +6266,7 @@ async function wwEdit(first){
 }
 
 /* ---------- help and info ---------- */
-const QUIRE_VERSION = '1.5', QUIRE_DATE = '2026-10-31';
+const QUIRE_VERSION = '1.5.1', QUIRE_DATE = '2026-11-01';
 function helpFacts(){
   const all = [...S.entries.values()], count = k => all.filter(e => e.kind === k).length;
   const where = S.mode === 'file' ? ({idb:'This browser’s storage for this file, plus the file itself when you use Save file', ls:'This browser’s local storage for this file, plus the file itself when you use Save file', mem:'Only this open tab. The browser won’t keep notes for this file, so use Save file before closing'})[store.kind] || 'This browser'
@@ -6148,10 +6337,11 @@ function helpHTML(){
       <tr><td><b>Suits</b></td><td>Wide screens and many entries.</td><td>Phones, narrow windows, more room for the page.</td></tr>
     </tbody></table>
     <ul>
-      <li><b>The title bar</b> holds the story picker (at the top of the sidebar on wide screens), the Story menu (go to, new, duplicate, delete, the trash, milestones, find and replace, import chapters), Overview, Stats, Sprint, Save file and Options.</li>
+      <li><b>The title bar</b> holds the story picker (at the top of the sidebar on wide screens), the Story menu (go to, new, duplicate, delete, the trash, read-through, milestones, trimming version history, find and replace, import chapters), Overview, Stats, Sprint, Save file and Options.</li>
       <li><b>Tags</b> on an entry are links that search the story for that tag.</li>
       <li><b>Order:</b> each list has an order switch (chapters 1–9, characters and places A–Z, notes Recent). Choose Custom, then drag the ⋮⋮ handles, or click one and use ↑ ↓. Undo appears after each move.</li>
       <li><b>Several chapters at once:</b> press <b>Select</b> on the chapter list or the Chapters page, tick chapters (Shift-click ticks a range), then set their status or type, add or remove a tag, give them a time, or move them to the trash, all with Undo. With Order set to Custom, dragging one ticked chapter moves all of them together. In the sidebar, the New button, status strip and order switch stay put while the list scrolls.</li>
+      <li><b>Sidebar categories</b> (Options → Display → Sidebar categories…): hide the categories a story doesn’t need right now, like Story arcs or Notes, to leave more room for the list. Each story remembers its own choice; Go to (Ctrl+K), Search and links still reach everything, and a hidden category shows while one of its entries is open. <b>Compact</b> puts the categories in two columns.</li>
       <li><b>Dropping files:</b> a Word (.docx), .txt or .md manuscript imports its chapters, a backup (.json) restores it, and images go into any text or onto a portrait.</li>
       <li><b>On phones</b> the toolbar becomes one line that scrolls sideways, and with the sidebar the list and the page take turns on screen.</li>
     </ul>
@@ -6173,9 +6363,10 @@ function helpHTML(){
       <li><b>Restoring</b> a backup asks before touching entries that already exist, and by default keeps whichever version is newer. An entry restored from a backup leaves the trash.</li>
       <li><b>The trash</b> (Story ▾ → Trash): deleted chapters, sheets, notes, story arcs and whole stories wait here for 30 days, then they’re deleted for good. Right after deleting, Undo on the message brings it straight back. Restoring from the trash brings back an entry as it was, with its places in viewpoints, casts, arcs, links and speaker marks. Trashed entries stay in the notebook${S.mode === 'file' ? ' and the saved file' : ''} (encrypted along with it, if you use encryption) but are left out of backups, exports and search. To get rid of something now, use Delete for good, or Empty the trash.</li>
       <li><b>Encrypted backups</b> (Options → Backup → Encrypt backups): each backup asks for a password and is saved as <code>…-encrypted.json</code>. Restoring asks for the same password.</li>
-      <li><b>Encrypting the file</b> (Options → Backup → Encrypt this file, in a downloaded Quire): from the next Save file on, the notebook inside the HTML file is encrypted. Opening the file shows a lock screen first. Change the file’s password… sets a new one; copies saved before keep the old one.</li>
+      <li><b>Encrypting the file</b> (Options → Backup → Encrypt this file, in a downloaded Quire): from the next Save file on, the notebook inside the HTML file, and this browser’s copy of it, are encrypted. Opening the file shows a lock screen first. Change the file’s password… sets a new one at the next Save file; copies saved before keep the old one.</li>
       <li><b>Choosing a password:</b> a meter rates it as you type and estimates how long guessing it would take. Several unrelated words make a strong, memorable password; names from your story, years and common passwords make a weak one. Very weak passwords aren’t accepted.</li>
-      <li><b>What encryption covers:</b> the saved file and the backups. While you write, the working copy in this browser’s storage is not encrypted, and neither are exports, so lock your computer and keep the browser profile private. <b>If you forget the password, nobody can recover the writing</b>, not even with Quire, so keep it somewhere safe.</li>
+      <li><b>What encryption covers:</b> the saved file, this browser’s working copy and version history (from the first Save file with encryption on), and backups if you encrypt them. Exports are not encrypted. Quire never writes your text unencrypted while the file is encrypted, so if the browser closes within a split second of your last keystroke, those last words may be missing; the “leave this page?” question usually gives the save enough time.</li>
+      <li><b>A locked browser copy:</b> if you open an older copy of the file whose password differs from the browser’s copy (say, after changing the password in a newer copy), Quire asks for the newer password to bring that work in, and the file uses it from the next Save file. Choose Not now and your changes stay in the tab until you save; the browser’s copy stays untouched. <b>If you forget the password, nobody can recover the writing</b>, not even with Quire, so keep it somewhere safe.</li>
       <li><b>Chapter history</b> is stored as compressed word-level changes, so hundreds of versions take about the space of one copy. Options → Chapter history can thin out old versions, or keep history out of the saved file.</li>
       <li><b>File size:</b> a whole novel is a few hundred KB. Images make up most of a file’s size, so shrink large photos first.</li>
     </ul>
@@ -6208,9 +6399,12 @@ function helpHTML(){
       <li><b>Sprints</b> time your writing and count the words you add. Options → Display can show a running sprint, and a word count, just above the text; in focus mode a Sprint button appears there.</li>
       <li><b>Drafts</b> try out changes in a copy of a chapter. The main text, stats and exports are untouched until you merge. Merging shows each change in green and red to accept or reject; edits made to the main text meanwhile are kept, and where both changed the same passage you choose. Each draft has its own history, and a merge can be undone.</li>
       <li><b>Version history</b> replays how a chapter was written. Name a version (“Sent to beta readers”) to mark it; named versions are never thinned out. <b>Milestones</b> (Story ▾ → Milestones) name the current version of every chapter at once, like “Draft 2 finished”; later, compare a chapter with a milestone (the history’s “Show changes from” menu) or bring one chapter back to it. Milestones need chapter history snapshots switched on.</li>
+      <li><b>Trimming version history:</b> press <b>Trim…</b> in a chapter’s Version history, or Story ▾ → Trim version history… for every chapter (or the ones ticked in Select mode). Keep one version per day, one per week, or only named versions and the latest. Named versions, milestones and the latest version always stay; Quire says how many versions go and asks first, because it can’t be undone. <b>Thin now</b> (Options → Chapter history) applies the automatic thinning rule right away.</li>
+      <li><b>Read-through</b> (Story ▾ → Read through): the whole manuscript as one read-only text in chapter order. Select words and press Comment to leave a note; it lands in that chapter, with Undo. Click a comment to read it. Drafts aren’t shown.</li>
       <li><b>Undo</b> (<kbd>Ctrl</kbd>+<kbd>Z</kbd>, redo with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> or <kbd>Ctrl</kbd>+<kbd>Y</kbd>) steps back through your typing and Quire’s own changes to the text in order: speaker marks, passage tags, comments, alignment, fonts, links, Fix quotes, scene labels and Clear formatting. Messages after those actions have an Undo button too, for phones. Each text keeps its own undo steps while Quire is open.</li>
       <li><b>Prose checker</b> (the highlighter in the toolbar): <b>Hemingway</b> marks hard sentences, adverbs, passive voice and wordy phrases, with a reading grade (English only). <b>Revision</b> marks word echoes and dialogue, and starts switched off. Click a highlight to see why, or a category to hide it. Options → Text sets it to Full, Hemingway or Off.</li>
-      <li><b>Stats detail</b> (Options → Display or the bottom of Stats): Basic, Standard, or In depth with rhythm, paragraph density, sentence openers, punctuation, repeated phrases and a narration check. Prose figures work for the whole manuscript or one chapter.</li>
+      <li><b>Stats detail</b> (Options → Display or the bottom of Stats): Basic, Standard, or In depth with rhythm, paragraph density, sentence openers, punctuation, repeated phrases and a narration check. Prose figures work for the whole manuscript or one chapter. For the whole manuscript, paragraph density lists the walls of text (three or more complex or dense paragraphs in a row); one chapter shows every paragraph as a dot.</li>
+      <li><b>Narration check:</b> compares a chapter’s Narration setting with its sentences outside dialogue, italics and quoted blocks. Text messages and letters written in first person can set it off: press <b>This is fine</b> and the note stays away until the chapter gets more sentences like those. Its examples are shown exactly as written.</li>
       <li><b>Share on AO3</b> (switch on AO3 sharing in Options → Export) appears under each chapter. It copies the text on screen as AO3-ready HTML and opens the right AO3 page: a new work, a new chapter of the work you’ve linked, or this chapter’s edit page once you’ve pasted its link. Formatting, alignment, scene breaks and links carry over; comments, fonts and images don’t, and videos become links. Chapters edited since their last copy show “AO3 behind” in the chapter list.</li>
       <li><b>Story arcs:</b> drag a beat on the curve, sideways through the story and up or down for tension, or click it and use the arrow keys.</li>
       <li><b>Word manuscript</b> (Options → Export) uses standard manuscript format, for submissions: 12-point type, double spacing, a title page with word count, each chapter on a new page and a running header. Check the file once in your word processor before sending.</li>
@@ -6234,8 +6428,9 @@ function helpHTML(){
       <li><b>Who says this</b> (the speaker button in a chapter’s toolbar) is for dialogue: it marks who says a line. Put the cursor in a line, or select it, and pick the speaker. The panel stays open, so click into the next line, or press <b>Next unmarked line</b>, and pick again; with a keyboard, 1–9 choose a speaker and N moves on. Close it with the button again, Done or Esc. Marked lines show as a dotted bar in the right margin (Options → Text → Speaker marks: bar, underline or off); point at a bar to see who speaks. To clear marks, select the text and press <b>Remove … marks in the selection</b>. Voices then compares how your characters speak. Only the lines you mark count; Quire never guesses a speaker. Marks are left out of every export. To set whose <i>scene</i> it is, use the scene labels below instead; no selecting needed.</li>
       <li><b>Scene labels:</b> give a chapter two or more viewpoint characters and a small label appears at the start of the text and at each scene break. Click the eye to choose whose scene follows; a scene keeps the viewpoint of the one before until you change it. The Point of view field shows how the chapter’s words divide between them, and Stats uses the same split for the whole story. When the chapter has a time (When it happens), each scene break also gets a clock: click it to set that scene’s own time, such as a flashback. A scene without its own time shares the chapter’s.</li>
       <li><b>Story time:</b> on the story overview, choose real dates, plain days (“Day 3”) or a calendar of your own: its months and their days, weekdays, eras and leap years. Time labels (“The Long Winter”) name points in time and sort by a number you give them. Set the span the story covers, too. In a chapter, switch on <b>Calendar</b> beside When it happens to pick a date and time, with an optional end; switched off, you type the time as before. The Story timeline in Stats puts chapters in story order and shows scenes with their own time indented, marking flashbacks and anything outside the story’s span; a scene’s words still count for its chapter. Times can appear under chapter titles and at scene breaks in the Word document, e-book and web page (a checkbox when you export), never in the Word manuscript or on AO3.</li>
+      <li><b>Relationships:</b> on a character, add how they relate to others. Below your rows, <b>On other sheets</b> shows what other characters’ sheets say about this one; <b>Add the other side</b> starts a row pointing back, and “✓ both sides” marks pairs that already have one. With three or more rows, show them A–Z or in your own order (drag the ⠿ grip, or use ↑ ↓); each sheet remembers its choice.</li>
       <li><b>Links between entries:</b> select a name and press <b>[[ ]]</b> in the toolbar to make it a link, or press it anywhere else for an empty link with suggestions; typing <code>[[</code> does the same. Arrow keys and Enter pick an entry, Esc keeps what you typed. A link finds an entry by its title or by one of its “also known as” names, so [[Holmes]] can open Sherlock Holmes.</li>
-      <li><b>Your own fields</b> (under the tags on a character, place, note, chapter or story arc): add fields such as Magic, Rank or Born, as one line, longer text, a choice list, a number or a date. They show on every entry of that kind in the story, or in every story if you tick that; the reference panel, search and the sheets export include them. Deleting a field that has values asks first, with Undo after.</li>
+      <li><b>Your own fields</b> (under the tags on a character, place, note, chapter, story arc or the story overview): add fields such as Magic, Rank or Born, as one line, longer text, a choice list, a number or a date. They show on every entry of that kind in the story, or in every story if you tick that; the reference panel, search and the sheets export include them. Deleting a field that has values asks first, with Undo after.</li>
       <li><b>Title image</b> (story overview): cover art or a mood picture, shown in its own shape. Add a short description for screen readers. The e-book can use it as its cover, or behind the title; the Word document and web page can show it at the start.</li>
       <li><b>Status colors</b> (Options → Display → Color chapters by status): chapter lists show each chapter’s status as a color, and the chapter list starts with a strip of the whole manuscript, each block as wide as its chapter. Click a block to open the chapter.</li>
       <li><b>Image tags:</b> click an image in a chapter or note to tag it; portraits and place images have a tag box underneath. Quire adds each image’s shape (Portrait, Landscape or Square) by itself. Search for #tag or #landscape finds the entries holding those images. Exports leave image tags out.</li>
@@ -6265,7 +6460,7 @@ function helpHTML(){
     <h3 id="help-built">How it’s built</h3>
     <ul>
       <li><b>Made with the help of Claude</b>, Anthropic’s AI assistant.</li>
-      <li><b>One file</b> of about 890 KB: page, styles and program, with no frameworks, libraries or build step.</li>
+      <li><b>One file</b> of about 925 KB: page, styles and program, with no frameworks, libraries or build step.</li>
       <li><b>Data</b> are plain JSON entries in a <code>&lt;script type="application/json"&gt;</code> block inside the file (format version 2; older notebooks upgrade on opening). Browser storage uses IndexedDB, then local storage, then memory.</li>
       <li><b>The editor</b> is the browser’s own rich-text editing. Everything pasted or loaded passes a strict filter that keeps only basic formatting, links, images and media links.</li>
       <li><b>Encryption</b> uses the browser’s own Web Crypto: AES-256-GCM with a key derived from the password by PBKDF2-SHA-256 with 600,000 rounds and a random salt, and a fresh random IV for every save. The settings are authenticated with the data, so a changed or damaged file is refused rather than misread.</li>
@@ -7088,9 +7283,20 @@ function histKeep(list, now, named){
   }
   return keep;
 }
-async function histThin(tk, h){
-  const list = []; for (const seg of h.segs) { let t = seg.base; seg.v.forEach((v, i) => { if (i) t = applyDelta(t, v.d); list.push({t: v.t, w: v.w, text: t}); }); }
-  const keep = histKeep(list, Date.now(), new Set(tlMarks(tk).map(m => m.t)));
+const histList = h => { const list = []; for (const seg of h.segs) { let t = seg.base; seg.v.forEach((v, i) => { if (i) t = applyDelta(t, v.d); list.push({t: v.t, w: v.w, text: t}); }); } return list; };
+async function histThin(tk, h){ const list = histList(h); return histRebuild(tk, h, list, histKeep(list, Date.now(), new Set(tlMarks(tk).map(m => m.t)))); }
+/* Trimming by hand: 'day' keeps the last version of each day, 'week' of each week, 'named' only named versions (milestones are named too); the latest always stays */
+function histKeepBy(list, mode, named){
+  const keep = list.map(() => false), seen = new Set();
+  const key = t => { const d = new Date(t); d.setHours(0, 0, 0, 0); if (mode === 'week') d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d.getTime(); };
+  for (let i = list.length - 1; i >= 0; i--) {
+    if (i === list.length - 1 || named.has(list[i].t)) { keep[i] = true; continue; }
+    if (mode === 'named') continue;
+    const b = key(list[i].t); if (!seen.has(b)) { seen.add(b); keep[i] = true; }
+  }
+  return keep;
+}
+async function histRebuild(tk, h, list, keep){
   if (keep.every(Boolean)) return;
   const old = h.segs.map(s => s.seg);
   h.segs = []; h.lastText = null; h.bytes = 0;
@@ -7098,7 +7304,42 @@ async function histThin(tk, h){
   const used = new Set(h.segs.map(s => s.seg));
   for (const n of old) if (!used.has(n)) await histDelRec(`${tk}~${n}`);
 }
-/* Delete a chapter's history, including every draft's. */
+const chTimelines = c => [tlKey(c.id, ''), ...(c.drafts || []).map(d => tlKey(c.id, d.id))];
+/* Works out what a trim removes across chapters; run() then does it, one timeline at a time, inside each timeline's own queue */
+async function histTrimPlan(chs, mode){
+  histFlushAll();
+  const plans = []; let total = 0, drop = 0, bytes = 0;
+  for (const c of chs) for (const tk of chTimelines(c)) {
+    const h = histState(tk); await h.ready; await h.chain; if (h.failed || !h.segs.length) continue;
+    const list = histList(h), keep = mode === 'auto' ? histKeep(list, Date.now(), new Set(tlMarks(tk).map(m => m.t))) : histKeepBy(list, mode, new Set(tlMarks(tk).map(m => m.t)));
+    const n = keep.filter(k => !k).length; total += list.length; drop += n; bytes += h.bytes;
+    if (n) plans.push({tk, h, list, keep});
+  }
+  return {plans, total, drop, bytes, run: async () => { const before = plans.reduce((a, p) => a + p.h.bytes, 0); for (const p of plans) { p.h.chain = p.h.chain.then(() => histRebuild(p.tk, p.h, p.list, p.keep)); await p.h.chain; } return before - plans.reduce((a, p) => a + p.h.bytes, 0); }};
+}
+const TRIM = [['day', 'Keep one version per day', 'The last version of each day.'], ['week', 'Keep one version per week', 'The last version of each week.'], ['named', 'Keep only named versions and the latest', 'Milestones count as named.']];
+async function histTrim(scope){
+  const p = project(); if (!p) return;
+  const one = scope && scope.kind === 'chapter' ? scope : null, sel = !one && S.sel && S.sel.ids.size ? [...S.sel.ids].map(id => S.entries.get(id)).filter(c => c && c.kind === 'chapter') : [];
+  const r = await askChoice({title: one ? `Trim the history of “${titleOf(one)}”` : 'Trim version history', html: `<p class="dlg-note">Deletes older versions you no longer need. Named versions, milestones and the latest version always stay.${one && (one.drafts || []).length ? ' Drafts are trimmed the same way.' : ''}</p>
+    <div class="trim-opts" role="radiogroup" aria-label="What to keep">${TRIM.map(([v, l, h], i) => `<label class="check"><input type="radio" name="trim" value="${v}"${i ? '' : ' checked'}> <span>${l} <span class="muted">${h}</span></span></label>`).join('')}</div>
+    ${one ? '' : `<div class="trim-opts" role="radiogroup" aria-label="Which chapters"><label class="check"><input type="radio" name="trim-scope" value="all" checked> All chapters in “${esc(p.title || 'Untitled story')}”</label>${sel.length ? `<label class="check"><input type="radio" name="trim-scope" value="sel"> The ${plural(sel.length, 'chapter')} ticked in Select mode</label>` : ''}</div>`}`,
+    choices: [{label: 'Next', value: 'ok', primary: true}, {label: 'Cancel', value: null}],
+    read: b => ({mode: (b.querySelector('input[name=trim]:checked') || {}).value, scope: (b.querySelector('input[name=trim-scope]:checked') || {}).value})});
+  if (!r || !r.form || !r.form.mode) return;
+  await histTrimDo(one ? [one] : r.form.scope === 'sel' ? sel : list('chapter'), r.form.mode, one);
+}
+async function histTrimDo(chs, mode, one){
+  toast('Working out what to trim…');
+  const plan = await histTrimPlan(chs, mode);
+  if (!plan.drop) { toast(mode === 'auto' ? 'Nothing to thin out: the versions already follow the rule.' : 'Nothing to trim: every version is one to keep.'); return; }
+  const what = one ? `“${esc(titleOf(one))}”` : plural(new Set(plan.plans.map(x => tlSplit(x.tk).ch)).size, 'chapter');
+  const ok = await askChoice({title: `Delete ${plural(plan.drop, 'version')}?`, html: `<p>This deletes ${fmt(plan.drop)} of ${fmt(plan.total)} versions of ${what}, freeing about ${esc(fmtBytes(Math.round(plan.bytes * plan.drop / Math.max(1, plan.total))))}. It can’t be undone. If you might want them later, make a backup first (Options → Backup).</p>`, choices: [{label: `Delete ${plural(plan.drop, 'version')}`, value: 'ok', primary: true}, {label: 'Cancel', value: null}]});
+  if (!ok) return;
+  toast('Trimming…'); const freed = await plan.run();
+  if (S.hp) { const c = S.entries.get(S.hp.ch); histClosePanel(); if (c && one) await histOpen(c); }
+  toast(`Deleted ${plural(plan.drop, 'version')}, freeing ${fmtBytes(Math.max(0, freed))}.`);
+}
 async function histDropChapter(ch){
   try { const recs = await histRecords(ch, true); for (const r of recs) await histDelRec(r.key || `${tlKey(r.ch, r.dr)}~${r.seg}`); } catch {}
   for (const k of Object.keys(S.H)) if (k === ch || k.startsWith(ch + '#')) { clearTimeout(S.H[k].timer); delete S.H[k]; }
@@ -7163,7 +7404,7 @@ function histRender(){
     <div class="hist-meta" id="hist-meta"></div>
     <div class="hist-cmp-row"><label class="check"><input type="checkbox" id="hist-diff"${hp.diff ? ' checked' : ''}> Show changes</label>${(() => { const c = S.entries.get(hp.ch), ms = tlSplit(hp.tk).dr ? [] : msOf(S.entries.get(c && c.project)).filter(m => hp.items.some(x => x.t === m.chs[hp.ch])); return ms.length ? `<label class="hist-cmp-l">from <select id="hist-cmp" aria-label="Compare with"><option value="">the version before</option>${ms.map(m => `<option value="${m.chs[hp.ch]}"${hp.cmpT === m.chs[hp.ch] ? ' selected' : ''}>the milestone “${esc(m.n)}”</option>`).join('')}</select></label>` : '<span class="muted">from the version before</span>'; })()}</div>
     <div class="hist-view" id="hist-view" tabindex="0" role="region" aria-label="Text of this version"></div>
-    <div class="hist-actions"><button class="btn small" data-act="hist-restore">Restore this version</button><button class="btn small ghost" data-act="hist-copy">Copy its text</button><button class="btn small ghost" data-act="hist-name" id="hist-name"></button></div>
+    <div class="hist-actions"><button class="btn small" data-act="hist-restore">Restore this version</button><button class="btn small ghost" data-act="hist-copy">Copy its text</button><button class="btn small ghost" data-act="hist-trim">Trim…</button><button class="btn small ghost" data-act="hist-name" id="hist-name"></button></div>
   </div>`;
   if (hp.speed) $('#hist-speed').value = hp.speed;
   $('#hist-slider').addEventListener('input', e => { hp.idx = +e.target.value; histShow(); });
@@ -7269,7 +7510,7 @@ function migrateDrafts(e){
   if ('drafts' in e) {
     const seen = new Set();
     e.drafts = (Array.isArray(e.drafts) ? e.drafts : []).filter(d => d && typeof d === 'object' && typeof d.id === 'string' && ID_RE.test(d.id) && !seen.has(d.id) && seen.add(d.id)).map(d => {
-      const o = {id: d.id, name: String(d.name || 'Draft').replace(/\s+/g, ' ').trim().slice(0, 80) || 'Draft', body: typeof d.body === 'string' ? d.body : '', base: typeof d.base === 'string' ? d.base : '', created: +d.created || 0, updated: +d.updated || 0, merged: +d.merged || 0};
+      const o = {id: d.id, name: String(d.name || 'Draft').replace(/\s+/g, ' ').trim().slice(0, 80) || 'Draft', body: typeof d.body === 'string' ? nlFix(d.body) : '', base: typeof d.base === 'string' ? nlFix(d.base) : '', created: +d.created || 0, updated: +d.updated || 0, merged: +d.merged || 0};
       const ms = cleanMarks(d.marks); if (ms.length) o.marks = ms;
       return o;
     });
@@ -7746,9 +7987,18 @@ function proseBuild(p){
     if (paras.length) {
       S.paras = paras.map(x => ({ch: x.c.id, t: x.t}));
       const dc = [0, 0, 0, 0]; for (const x of paras) dc[x.d.lvl]++;
-      h += `<h4 class="prose-h">Paragraph density</h4><p class="stat-note">One dot per paragraph${one ? '' : ', chapter after chapter'}, from simple to dense by length and sentence complexity. Click a dot to go to the paragraph. Runs of dense paragraphs can feel like a wall of text.</p>
-        <div class="dots" role="img" aria-label="Paragraphs by density">${paras.map((x, i) => `<i data-para="${i}"${!one && i && x.c !== paras[i - 1].c ? ' class="nc"' : ''} style="background:${densShade(x.d.lvl)}" title="${esc(`${DENS[x.d.lvl]}: ${plural(x.d.n, 'word')}, grade ${x.d.g}${one ? '' : ` · ${labels.get(x.c.id)}`} · ${x.t.length > 120 ? x.t.slice(0, 117) + '…' : x.t}`)}"></i>`).join('')}</div>
-        <div class="seg-legend">${DENS.map((l, i) => `<span><i style="background:${densShade(i)}"></i>${l} <b class="mono">${dc[i]}</b></span>`).join('')}</div>`;
+      h += `<h4 class="prose-h">Paragraph density</h4>`;
+      const legend = `<div class="seg-legend">${DENS.map((l, i) => `<span><i style="background:${densShade(i)}"></i>${l} <b class="mono">${dc[i]}</b></span>`).join('')}</div>`;
+      if (one) h += `<p class="stat-note">One dot per paragraph, from simple to dense by length and sentence complexity. Click a dot to go to the paragraph. Runs of dense paragraphs can feel like a wall of text.</p>
+        <div class="dots" role="img" aria-label="Paragraphs by density">${paras.map((x, i) => `<i data-para="${i}" style="background:${densShade(x.d.lvl)}" title="${esc(`${DENS[x.d.lvl]}: ${plural(x.d.n, 'word')}, grade ${x.d.g} · ${x.t.length > 120 ? x.t.slice(0, 117) + '…' : x.t}`)}"></i>`).join('')}</div>${legend}`;
+      else {
+        /* the whole manuscript: list the walls of text instead of thousands of dots */
+        const runs = []; let run = null;
+        paras.forEach((x, i) => { if (x.d.lvl < 2) { run = null; return; } if (run && run.c === x.c && run.end === i - 1) { run.end = i; run.n++; run.dense += x.d.lvl === 3; } else { run = {c: x.c, start: i, end: i, n: 1, dense: +(x.d.lvl === 3)}; runs.push(run); } });
+        const walls = runs.filter(r => r.n >= 3).sort((a, b) => b.n - a.n || a.start - b.start), shown = walls.slice(0, 30);
+        h += `<p class="stat-note">Places where three or more complex or dense paragraphs come in a row, longest first. They can feel like a wall of text. Pick a chapter above to see every paragraph as a dot.</p>
+          ${walls.length ? `<ol class="walls">${shown.map(r => `<li><button class="link-btn" data-para="${r.start}">${esc(labels.get(r.c.id) || 'Chapter')}: ${esc(titleOf(r.c))}</button> <span class="muted">${plural(r.n, 'paragraph')} in a row${r.dense ? `, ${r.dense} dense` : ''} · ${esc(paras[r.start].t.length > 70 ? paras[r.start].t.slice(0, 67) + '…' : paras[r.start].t)}</span></li>`).join('')}</ol>${walls.length > shown.length ? `<p class="stat-note">And ${plural(walls.length - shown.length, 'shorter one')}.</p>` : ''}` : `<p class="narr-ok">No walls of text: nowhere do three complex or dense paragraphs come in a row.</p>`}${legend}`;
+      }
     }
     // sentence openers
     const names = properNames(sents), oc = new Map(OPEN_CAT.map(([k]) => [k, 0])), firsts = new Map();
@@ -7788,7 +8038,9 @@ function proseBuild(p){
   if (deep) {
     // narration check
     const checked = scope.filter(c => c.narration && !/^Mixed|^Epistolary/.test(c.narration) && htmlText(c.body || '').trim());
-    const flags = checked.map(c => { const r = personMix(c); return {c, r, v: personVerdict(c, r)}; });
+    const flags = checked.map(c => { const r = personMix(c), k = c.narrOk; return {c, r, v: personVerdict(c, r), ok: !!k && k.n === c.narration && r.p1 <= k.p1 && r.p2 >= k.p2}; });
+    const exHTML = r => `<span class="narr-ex">${r.ex.map(e => `<span>${esc(e)}</span>`).join('<span class="narr-sep" aria-hidden="true"> · </span>')}</span>`;
+    const okBtn = c => `<button class="btn small ghost" data-act="narr-ok" data-id="${esc(c.id)}" title="Hide this note until the chapter gets more sentences like these">This is fine</button>`;
     h += `<h4 class="prose-h">Narration check</h4>`;
     if (!checked.length) h += `<p class="stat-note">${one ? 'Set this chapter’s Narration to compare it with the text.' : 'Set Narration on your chapters to compare it with the text.'} Quire looks at which person (I, you, she) the sentences outside dialogue use. English only.</p>`;
     else {
@@ -7796,9 +8048,13 @@ function proseBuild(p){
       h += `<p class="stat-note">Compares each chapter’s Narration setting with the sentences outside dialogue, italics and quoted blocks. English only.${!one && unset ? ` ${plural(unset, 'chapter')} without a Narration setting ${unset === 1 ? 'isn’t' : 'aren’t'} checked.` : ''}</p>`;
       if (one) {
         const x = flags[0], r = x.r, pc = v => r.n ? Math.round(v / r.n * 100) : 0;
-        h += `<div class="narr-row${x.v ? ' warn' : ''}"><span><b>${esc(one.narration)}</b> · sentences with I/we ${pc(r.p1)}%, you ${pc(r.p2)}%, he/she/they ${pc(r.p3)}%</span>${x.v ? `<span class="narr-v">${esc(x.v)}</span>${r.ex.length && /first person\?$/.test(x.v) ? `<span class="narr-ex">${r.ex.map(e => `“${esc(e)}”`).join(' ')}</span>` : ''}` : '<span class="narr-ok">Matches the setting.</span>'}</div>`;
-      } else if (!bad.length) h += `<p class="narr-ok">All ${plural(checked.length, 'chapter')} checked match their Narration setting.</p>`;
-      else h += bad.map(x => `<div class="narr-row warn"><button class="btn small ghost" data-act="open" data-open="${esc(x.c.id)}">${esc(labels.get(x.c.id))}: ${esc(titleOf(x.c))} →</button><span><b>${esc(x.c.narration)}.</b> <span class="narr-v">${esc(x.v)}</span></span>${x.r.ex.length && /first person\?$/.test(x.v) ? `<span class="narr-ex">${x.r.ex.map(e => `“${esc(e)}”`).join(' ')}</span>` : ''}</div>`).join('') + (checked.length > bad.length ? `<p class="stat-note">The other ${plural(checked.length - bad.length, 'chapter')} match their setting.</p>` : '');
+        h += `<div class="narr-row${x.v && !x.ok ? ' warn' : ''}"><span><b>${esc(one.narration)}</b> · sentences with I/we ${pc(r.p1)}%, you ${pc(r.p2)}%, he/she/they ${pc(r.p3)}%</span>${x.v && x.ok ? `<span class="narr-ok">Marked as fine. <button class="link-btn" data-act="narr-undo" data-id="${esc(one.id)}">Check again</button></span>` : x.v ? `<span class="narr-v">${esc(x.v)}</span>${r.ex.length && /first person\?$/.test(x.v) ? exHTML(r) : ''}${okBtn(one)}` : '<span class="narr-ok">Matches the setting.</span>'}</div>`;
+      } else {
+        const warn = bad.filter(x => !x.ok), fine = bad.filter(x => x.ok);
+        if (!warn.length) h += `<p class="narr-ok">All ${plural(checked.length, 'chapter')} checked match their Narration setting${fine.length ? ' or are marked as fine' : ''}.</p>`;
+        else h += warn.map(x => `<div class="narr-row warn"><button class="btn small ghost" data-act="open" data-open="${esc(x.c.id)}">${esc(labels.get(x.c.id))}: ${esc(titleOf(x.c))} →</button><span><b>${esc(x.c.narration)}.</b> <span class="narr-v">${esc(x.v)}</span></span>${x.r.ex.length && /first person\?$/.test(x.v) ? exHTML(x.r) : ''}${okBtn(x.c)}</div>`).join('') + (checked.length > bad.length ? `<p class="stat-note">The other ${plural(checked.length - bad.length, 'chapter')} match their setting.</p>` : '');
+        if (fine.length) h += `<p class="stat-note narr-fine">Marked as fine: ${fine.map(x => `${esc(labels.get(x.c.id))} <button class="link-btn" data-act="narr-undo" data-id="${esc(x.c.id)}" aria-label="Check ${esc(labels.get(x.c.id))} again">check again</button>`).join(' · ')}</p>`;
+      }
     }
   }
   h += topWordsHTML(text);
@@ -7820,7 +8076,7 @@ function jumpToText(cid, text){
 desk.addEventListener('click', ev => {
   const b = ev.target.closest && ev.target.closest('.rhythm [data-sent]');
   if (b && S.rhythm) { const s = S.rhythm.list[+b.dataset.sent]; if (s) jumpToText(S.rhythm.ch, s); return; }
-  const d = ev.target.closest && ev.target.closest('.dots [data-para]');
+  const d = ev.target.closest && ev.target.closest('.dots [data-para], .walls [data-para]');
   if (d && S.paras) { const x = S.paras[+d.dataset.para]; if (x) jumpToText(x.ch, x.t); }
 });
 
@@ -8702,6 +8958,7 @@ desk.addEventListener('change', ev => {
   const e = S.entries.get(host.dataset.id); if (!e) return;
   if (t.dataset.draftSel !== undefined) { draftUse(e, t.value); return; }
   if (t.dataset.ao3 !== undefined) { ao3SetLink(e, t); return; }
+  if (t.dataset.readGo !== undefined) { const x = t.value && document.getElementById('rd-' + t.value); if (x) x.scrollIntoView({block: 'start', behavior: reduced ? 'auto' : 'smooth'}); t.value = ''; return; }
   if (t.dataset.proseCh !== undefined) { S.proseCh = t.value; const box = $('#prose'); if (box) { box.outerHTML = proseHTML(e); const sel = $('#prose [data-prose-ch]'); if (sel) sel.focus({preventScroll:true}); } return; }
   if (t.dataset.taginput !== undefined) { if (addTags(e, t.value)) rerenderTags(e, false); return; }
   if (t.type === 'checkbox' && t.dataset.f) { e[t.dataset.f] = t.checked; touch(e); if (t.dataset.f === 'portraitOn') { rerenderLook(e); const c = $('#f-portraitOn'); if (c) c.focus({preventScroll:true}); } return; }
@@ -8732,6 +8989,8 @@ desk.addEventListener('change', ev => {
 });
 desk.addEventListener('click', ev => {
   const m = ev.target.closest && ev.target.closest('.rte-body mark'); if (!m) return;
+  const rd = m.closest('.read-body[data-read]');
+  if (rd) { if (m.classList.contains('cmt') && !getSelection().toString()) toast(`Comment: ${m.dataset.c}`, {label: 'Open chapter', run: () => open(rd.dataset.read)}); return; }
   if (m.classList.contains('cmt')) cmtOpen(m.closest('.rte'), m);
   else if (m.classList.contains('ptag') && S.ptagStyle === 'line' && m.dataset.pid) ptagOpen(m.closest('.rte'), m.dataset.pid, false);
 });
@@ -8818,6 +9077,9 @@ document.addEventListener('click', ev => {
   const act = a.dataset.act, cur = current();
   switch (act) {
     case 'open': return open(a.dataset.open);
+    case 'narr-ok': case 'narr-undo': { const c = S.entries.get(a.dataset.id); if (!c || c.kind !== 'chapter') return;
+      if (act === 'narr-ok') { const r = personMix(c); c.narrOk = {p1: r.p1, p2: r.p2, n: c.narration || ''}; } else delete c.narrOk;
+      touch(c); const box = $('#prose'); if (box) box.outerHTML = proseHTML(project()); return; }
     case 'fs-toggle': return fsToggle();
     case 'ao3-copy': if (cur) ao3Copy(cur, 'copy'); return;
     case 'ao3-go': if (!cur || !ao3Copy(cur, a.dataset.ao3Kind)) ev.preventDefault(); return;
@@ -8900,6 +9162,11 @@ document.addEventListener('click', ev => {
     case 'hist-play': if (S.hp) { if (S.hp.timer) { histStop(); histRender(); } else histPlay(); } return;
     case 'hist-restore': if (cur) histRestore(cur); return;
     case 'hist-copy': histCopy(); return;
+    case 'read-cmt': readComment(); return;
+    case 'read-close': S.kind = 'chapter'; showPanel('list'); return;
+    case 'cache-clear': cacheClear(); return;
+    case 'cache-unlock': cacheReload(); return;
+    case 'hist-trim': if (S.hp) { const c = S.entries.get(S.hp.ch); if (c) histTrim(c); } return;
     case 'hist-name': histName(); return;
     case 'hist-goto': if (S.hp) { histStop(); S.hp.idx = +a.dataset.i; histShow(); } return;
     case 'draft-open': if (cur && cur.kind === 'chapter') { if (S.dp) draftPanelClose(); else draftPanelOpen(cur); } return;
@@ -8958,8 +9225,11 @@ document.addEventListener('click', ev => {
       S.confirm = null; S.projectId = null; S.openId = null; pickProject(); savePrefs();
       renderAll(); return toast(`Moved “${p.title || 'Untitled story'}” to the trash.`, {label: 'Undo', run: () => binRestore(p.id, true)});
     }
-    case 'rel-add': if (cur) { cur.rels = [...(cur.rels || []), {to:'', how:''}]; touch(cur); $('#rels').innerHTML = relsHTML(cur); const s = $(`#rel-${cur.rels.length - 1}-to`); if (s) s.focus(); } return;
-    case 'rel-del': if (cur) { cur.rels.splice(+a.dataset.i, 1); touch(cur); $('#rels').innerHTML = relsHTML(cur); $('#links').innerHTML = linksHTML(cur); } return;
+    case 'rel-add': if (cur) { cur.rels = [...(cur.rels || []), {to:'', how:''}]; touch(cur); relRender(cur, `#rel-${cur.rels.length - 1}-to`); } return;
+    case 'rel-del': if (cur) { cur.rels.splice(+a.dataset.i, 1); touch(cur); relRender(cur); } return;
+    case 'rel-back': if (cur && cur.kind === 'character' && S.entries.has(a.dataset.from)) { cur.rels = [...(cur.rels || []), {to: a.dataset.from, how: ''}]; touch(cur); relRender(cur, `#rel-${cur.rels.length - 1}-how`); } return;
+    case 'rel-sort': if (cur) { if (a.dataset.v === 'az') cur.relSort = 'az'; else delete cur.relSort; touch(cur); relRender(cur, `[data-act="rel-sort"][data-v="${a.dataset.v}"]`); } return;
+    case 'rel-mv': if (cur) { const i = +a.dataset.i, j = i + (+a.dataset.d); relMove(cur, i, j); relRender(cur, `[data-act="rel-mv"][data-i="${j}"][data-d="${a.dataset.d}"]:not([disabled])`); } return;
     case 'tpl': if (cur) useTemplate(cur, a.dataset.tpl); return;
     case 'beat-add': if (cur) addBeat(cur); return;
     case 'beat-del': {
@@ -9242,7 +9512,7 @@ async function menuAction(m){
   if (m === 'encfile') { if (S.mode === 'file' && S.loaded) await (S.fileCrypt ? encFileOff() : encFileOn()); encSync(); return; }
   if (m === 'enc-pw') {
     if (S.mode !== 'file' || !S.fileCrypt) return;
-    const pw = await askPassword({title: 'New password for this file', intro: 'The next Save file locks the file with the new password. Copies saved before keep the old one.', isNew: true});
+    const pw = await askPassword({title: 'New password for this file', intro: 'The next Save file locks the file, and this browser’s copy, with the new password. Copies saved before keep the old one.', isNew: true});
     if (!pw) return;
     S.fileCrypt = await qeNewKey(pw); S.fileDirty = true; if (!S.dirtySince) S.dirtySince = Date.now(); status(); encSync();
     toast('Password changed. Use Save file to lock the file with it.'); return;
@@ -9274,6 +9544,10 @@ async function menuAction(m){
   if (m === 'focusx') { S.focusX = !S.focusX; savePrefs(); applyDisplay(); $$('[data-act="focus-toggle"]').forEach(b => b.title = focusTip()); return; }
   if (m === 'bin') return showPanel('bin');
   if (m === 'milestones') return showPanel('milestones');
+  if (m === 'read') return showPanel('read');
+  if (m === 'sb-cats') return sbCats();
+  if (m === 'hist-trim') return histTrim(null);
+  if (m === 'hist-thin-now') return histTrimDo(list('chapter'), 'auto', null);
   if (m === 'goto') return qsOpen();
   const p = project(); if (!p) { toast('Start or choose a story first.'); return; }
   if (m === 'dup-story') return duplicateStory(p);
@@ -9310,7 +9584,8 @@ window.addEventListener('pagehide', () => { histFlushAll(); flushAll(); rescueWr
    is kept in local storage as the page closes, and picked up the next time this file opens. */
 const RESCUE_KEY = () => 'quire.rescue:' + location.pathname;
 function rescueWrite(){
-  if (S.mode !== 'file' || !S.loaded) return;
+  if (S.mode !== 'file' || !S.loaded || S.cacheLocked) return;
+  if (S.fileCrypt || S.cacheCrypt) { try { localStorage.removeItem(RESCUE_KEY()); } catch {} return; }
   try {
     const ids = [...S.dirty]; if (!ids.length) { localStorage.removeItem(RESCUE_KEY()); return; }
     localStorage.setItem(RESCUE_KEY(), JSON.stringify({t: Date.now(), e: ids.map(id => { const e = anyEntry(id); return e ? [id, body(e)] : null; }).filter(Boolean)}));
@@ -9476,7 +9751,7 @@ async function openEncryptedBackup(h){
 /* ---- the encrypted saved file ---- */
 async function encFileOn(){
   if (!qeOK()) { toast('This browser can’t encrypt.'); return false; }
-  const pw = await askPassword({title: 'Encrypt this file', intro: 'From the next Save file on, the notebook inside this file is encrypted. Opening the file will ask for this password.', isNew: true});
+  const pw = await askPassword({title: 'Encrypt this file', intro: 'From the next Save file on, the notebook inside this file and this browser’s copy of it are encrypted. Opening the file will ask for this password.', isNew: true});
   if (!pw) return false;
   S.fileCrypt = await qeNewKey(pw);
   S.fileDirty = true; if (!S.dirtySince) S.dirtySince = Date.now(); status();
@@ -9484,7 +9759,7 @@ async function encFileOn(){
   return true;
 }
 async function encFileOff(){
-  const ok = await askChoice({title: 'Stop encrypting this file?', html: '<p>The next Save file stores the notebook unencrypted again, readable by anyone who opens the file.</p>', choices: [{label: 'Stop encrypting', value: true, primary: true}, {label: 'Keep encryption', value: null}]});
+  const ok = await askChoice({title: 'Stop encrypting this file?', html: '<p>The next Save file stores the notebook, and this browser’s copy, unencrypted again, readable by anyone who opens the file.</p>', choices: [{label: 'Stop encrypting', value: true, primary: true}, {label: 'Keep encryption', value: null}]});
   if (!ok) return false;
   S.fileCrypt = null; S.fileDirty = true; if (!S.dirtySince) S.dirtySince = Date.now(); status();
   toast('Encryption is off. Save the file to store it unencrypted.');
@@ -9609,14 +9884,22 @@ async function goFile(){
   if (ENC_EMBED) {
     if (!qeOK()) { const n = $('#notice'); n.innerHTML = '<b>This file is encrypted, and this browser can’t decrypt it.</b> Open it in a current Firefox, Chrome, Edge or Safari.'; n.hidden = false; return; }
     const r = await unlockFile(ENC_EMBED);
-    EMBED = r.data && Array.isArray(r.data.entries) ? r.data : null; S.fileCrypt = r.key; ENC_EMBED = null;
+    EMBED = r.data && Array.isArray(r.data.entries) ? r.data : null; S.fileCrypt = S.cacheCrypt = r.key; ENC_EMBED = null;
   }
   await store.open('storybible:' + location.pathname);
   S.mode = 'file';
   if (store.kind === 'mem') { const n = $('#notice'); n.innerHTML = '<b>This browser won’t let the file keep notes between visits.</b> Your work is safe while the tab is open. Use Save file (Ctrl+S) before closing it.'; n.hidden = false; }
   $('#offlineItem').textContent = 'Save notebook file (.html)';
-  let rows = [], meta = new Map();
-  try { rows = await store.all('entries'); meta = new Map(await store.all('meta')); } catch {}
+  let rows = [], meta = new Map(), adopted = false;
+  const readAll = async () => { rows = await store.all('entries'); meta = new Map(await store.all('meta')); };
+  try { await readAll(); }
+  catch (err) {
+    rows = []; meta = new Map();
+    if (err && err.code === 'cachekey' && qeOK() && await cacheUnlock()) { try { await readAll(); adopted = true; } catch { rows = []; meta = new Map(); } }
+    if (!adopted && store.kind !== 'mem') { const back = store.kind; S.cacheLocked = true; store.kind = 'mem'; store.back = back; store.data = {entries: {}, meta: {}, history: {}};
+      cacheNotice('It’s locked with a different password and may hold newer work. Until you unlock it, changes stay in this tab only, so use Save file before closing.', true); }
+  }
+  if (adopted) { S.fileCrypt = S.cacheCrypt; toast('Unlocked. From the next Save file, this file uses that password too.'); }
   const merged = new Map(rows), stored = new Set(merged.keys()), inFile = new Set();
   try {
     const rs = JSON.parse(localStorage.getItem(RESCUE_KEY()) || 'null');
@@ -9625,7 +9908,7 @@ async function goFile(){
       const [id, b] = x, cur = merged.get(id);
       if (!cur || (+b.updated || 0) > (+cur.updated || 0)) { delete b.id; merged.set(id, b); stored.add(id); store.put('entries', id, b).catch(() => {}); }
     }
-    localStorage.removeItem(RESCUE_KEY());
+    if (!S.cacheLocked) localStorage.removeItem(RESCUE_KEY());
   } catch {}
   let dirty = false;
   for (const raw of (EMBED ? EMBED.entries : [])) {
@@ -9639,11 +9922,13 @@ async function goFile(){
   }
   for (const id of stored) if (!inFile.has(id)) dirty = true;
   if (EMBED && Array.isArray(EMBED.history) && EMBED.history.length) {
-    let have = new Map(); try { have = new Map(await store.all('history')); } catch {}
+    let have = new Map(); try { if (!S.cacheLocked) have = new Map(await store.all('history')); } catch {}
     for (const r of EMBED.history) { if (!histValidRec(r)) continue; const cur = have.get(r.key); if (!cur || (r.t1 || 0) > (cur.t1 || 0)) store.put('history', r.key, r).catch(() => {}); }
   }
   for (const [id, b] of merged) { const d = migrate(JSON.parse(JSON.stringify(b))); d.id = id; putLoaded(d); }
+  if (adopted) dirty = true;
   S.fileDirty = dirty; if (dirty) S.dirtySince = Date.now(); S.loaded = true; app.dataset.mode = 'file'; encSync(); binSweep();
+  if (S.cacheCrypt && store.plain && !S.cacheLocked) store.rekey(S.cacheCrypt).catch(() => cacheNotice('Quire couldn’t encrypt this browser’s older, unencrypted copy.'));
   computeBases(); pickProject(); renderAll();
 }
 async function init(){
