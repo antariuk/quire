@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.6 (2026-11-02)
+
+- **Planning board** (Story ▾ → Planning board): a free board for each story with idea cards and cards for chapters, characters, places, notes and story arcs. Connect cards with lines (drag from ●, or tap ● and then the other card), label the lines, pan and zoom, and *Arrange as tree* on a click, with Undo. Relationship lines between character cards, idea cards that become chapters or notes, a list view for the keyboard, and *Save as image* for printing.
+- **Relationship map** (Story ▾, or under a character's Relationships): the characters and their relationships as a picture, with a list below.
+- **Review rounds:** *Send for review…* makes a review copy of a story for someone else's Quire; *Bring in a review…* (or restoring the returned file) turns each changed chapter into a draft named after the reviewer, to merge change by change, and lists changed sheets side by side to take or leave. Word files with tracked changes and comments work too. A returned review copy never overwrites your story.
+- **Your own chapter statuses** (Story ▾ → Chapter statuses…): rename, add, remove and reorder them, each with one of ten colors that fit every theme, or none.
+- **Front and back matter** on the story overview: dedication, epigraph, acknowledgments and about the author, placed correctly in the Word document, the e-book and the web page.
+- **Word goal** per day or per week, beside the target and deadline, in Stats and the progress bar.
+- **Going back:** "← Back to …" above the page after any page change, Alt+← and Alt+→, and the browser's Back and Forward buttons (and the back swipe on phones) in a downloaded Quire.
+- **Stats:** every section folds and Quire remembers; a new order from progress to shape, cast and places, prose and tags; gauges for values with a natural range (Options → Checks and marks → Stats tiles switches to plain numbers).
+- **Voices:** each character is compared with the whole manuscript by default, with what stands out; a Thoughts view from passages tagged as a character's thoughts (the tag button → Thoughts of), which no longer count as narration; "What Voices measures" explains the figures.
+- **Sense words:** leave out words of Quire's own lists (feel, feels, feeling and felt start out left out, since they're mostly about emotions), and notes under each box point out doubles.
+- **Options menu** regrouped into nine sections that fold: Export, Saving and backups, Encryption, Look, Layout, While writing, Typing, Checks and marks, Chapter history. Quote style only shows with smart quotes on.
+- **Find and replace** from a chapter starts on *This chapter*, with *All chapters* and *Everything in this story* beside it. (Before, "Chapter text" meant every chapter's text.)
+- **Relationship tags:** a ⇄ on tags that look like a relationship, wherever they show as chips, and the switch at the top of a #tag search.
+- **Foldable sections** have clearer headings with a turning arrow and a bigger tap area.
+- **Phones:** a notebook opened from an app such as Dropbox on Android now saves under the name it was last saved with (or the story's title) instead of a random one, says it's a new copy, and finds unsaved work again when the app hands out a new link.
+- Quire is now about 1,020 KB, up from 925 KB.
+
 ## 1.5.1 (2026-11-01)
 
 - **Read-through** (Story ▾ → Read through): the whole manuscript as one read-only text. Select words and press Comment, and the comment lands in that chapter.
