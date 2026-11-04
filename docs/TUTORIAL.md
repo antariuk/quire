@@ -20,18 +20,20 @@ Open `quire.html` in your browser. The first time, Quire offers two ways in:
 ![The title bar and tabs, numbered](tutorial/layout.png)
 
 1. **Story picker.** Switch between your stories.
-2. **Story menu.** Go to, new story, the example story, duplicate, delete, the trash, read-through, milestones, trimming version history, find and replace across the story, and importing chapters.
-3. **Overview.** The story's own sheet: title, logline, genre, theme, target length and deadline, and a count of everything in it.
+2. **Story menu.** Go to, new story, the example story, duplicate, delete, the trash, read-through, the planning board, the relationship map, milestones, trimming version history, chapter statuses, find and replace across the story, and importing chapters.
+3. **Overview.** The story's own sheet: title, logline, genre, theme, target length, deadline and word goal, front and back matter, and a count of everything in it.
 4. **Stats.** Word counts, writing pace, chapter lengths, point of view, cast presence, Voices and more.
 5. **Sprint.** A writing timer with an optional word goal and a chime at the end.
 6. **Save file.** Writes everything into the HTML file itself (Ctrl+S, or ⌘S on a Mac). It turns dark when there's something unsaved.
-7. **Options.** Every setting, plus export, backup and Help.
+7. **Options.** Every setting, plus export, backup, review rounds and Help.
 8. **Tabs.** One for each kind of entry: story arcs, chapters, characters, places, notes and tags. The number shows how many there are.
 9. **Search.** Searches the whole story. Start with `#` to find a tag, like `#clue`.
 
 Anywhere in Quire, **Ctrl+K** (⌘K on a Mac) opens [Go to](#7-go-to), the quickest way to get anywhere.
 
-**Prefer a sidebar?** Options → Display → Navigation → Sidebar puts the tabs and the list of entries in a column on the left, the way older versions of Quire looked. On a phone, the sidebar becomes its own page. To make room for a long chapter list, Options → Display → *Sidebar categories…* hides the categories a story doesn't need right now, or puts them in two columns.
+**Going back:** after following a link, a tag, a chip or a search result, *← Back to …* above the page takes you back to where you were, at the same spot. Alt+← does the same, and in a downloaded Quire so does the browser's Back button (or the back swipe on a phone).
+
+**Prefer a sidebar?** Options → Layout → Navigation → Sidebar puts the tabs and the list of entries in a column on the left, the way older versions of Quire looked. On a phone, the sidebar becomes its own page. To make room for a long chapter list, Options → Layout → *Sidebar categories…* hides the categories a story doesn't need right now, or puts them in two columns.
 
 ## 3. Chapters
 
@@ -41,7 +43,9 @@ The Chapters tab shows every chapter as a card: its title, status, word count ag
 
 1. **Order.** *1–9* keeps manuscript order. *Custom* lets you drag the ⋮⋮ handles to rearrange chapters, or click a handle and use ↑ ↓. Chapter numbers follow the new order, and Undo appears after each move.
 2. **Full synopses** shows each chapter's whole synopsis instead of the first lines.
-3. **The status strip** (switched on with Options → Display → Color chapters by status) shows the whole manuscript at a glance, one block per chapter, sized by length and colored from *Idea* to *Done*. Click a block to open that chapter.
+3. **The status strip** (switched on with Options → Layout → Color chapters by status) shows the whole manuscript at a glance, one block per chapter, sized by length and colored by status. Click a block to open that chapter. The statuses are yours to change: Story ▾ → *Chapter statuses…* renames, adds, removes and reorders them, each with a color that suits every theme (or none). Renaming one renames it on every chapter, and the last one counts as finished.
+
+   ![Chapter statuses](tutorial/statuses.png)
 4. **A card.** Click it to open the chapter.
 5. **Select** lets you change several chapters at once. Tick them (Shift-click ticks everything in between), then set their status or type, add or remove a tag, give them a time, or move them to the trash. With *Custom* order, dragging one ticked chapter moves all of them together. Every change has an Undo.
 
@@ -57,7 +61,7 @@ Each chapter has its own sheet above the text: target length, tags, and **Chapte
 
 Click one to add it. Quire looks for each name exactly as written, and for the other names listed under *Also known as* on the character or place sheet, so if the text calls Sherlock Holmes "Holmes", add "Holmes" there. Nothing is added unless you click.
 
-**When it happens** takes any wording, like "1887-03-14" or "Day 3, evening". Switch on **Calendar** beside it to pick a date and time from the story's calendar instead, with an optional end for a chapter that spans several days. The calendar is chosen on the story overview under *Story time*: real dates, plain days, or a calendar of your own with its months, weekdays, eras and leap years. There you can also name points in time ("The Long Winter") and set the span the whole story covers. The overview also takes a **title image**, which the e-book can use as its cover.
+**When it happens** takes any wording, like "1887-03-14" or "Day 3, evening". Switch on **Calendar** beside it to pick a date and time from the story's calendar instead, with an optional end for a chapter that spans several days. The calendar is chosen on the story overview under *Story time*: real dates, plain days, or a calendar of your own with its months, weekdays, eras and leap years. There you can also name points in time ("The Long Winter") and set the span the whole story covers. The overview also takes a **title image**, which the e-book can use as its cover, and, under *Front and back matter*, a dedication, an epigraph, acknowledgments and an about-the-author page for the Word document, the e-book and the web page.
 
 ## 4. Writing a chapter
 
@@ -72,7 +76,7 @@ Scroll down a chapter's sheet to its text.
 5. **Drafts** let you try out changes in a copy of the chapter. The main text stays untouched until you merge, change by change.
 6. **Version history** replays how the chapter was written (see [Revising](#11-revising)).
 
-Options → Display → **Buttons above the text…** changes the order of these buttons and which ones show.
+Options → Layout → **Buttons above the text…** changes the order of these buttons and which ones show.
 
 A few things happen as you type: `"quotes"` become “quotes” (English, German or French style), `--` becomes —, and `...` becomes …. Ctrl+Z right after undoes just that.
 
@@ -90,7 +94,7 @@ To bring writing in, paste it (formatting is kept, clutter is dropped), drop an 
 
 ## 5. Focus mode
 
-**Focus mode** hides the title bar, tabs and sheet, and leaves the text. Press Esc or *Leave focus* to bring everything back. With **Intense focus** (Options → Display), only the text, its toolbar and the buttons above it remain. On larger screens, the full-screen button next to it hides the browser's own bars too.
+**Focus mode** hides the title bar, tabs and sheet, and leaves the text. Press Esc or *Leave focus* to bring everything back. With **Intense focus** (Options → While writing), only the text, its toolbar and the buttons above it remain. On larger screens, the full-screen button next to it hides the browser's own bars too.
 
 A running sprint stays visible above the text. Here it is in the Twilight theme, with a sprint 2 seconds in and 5 words written:
 
@@ -131,17 +135,25 @@ Under **Also known as**, list a character's or place's other names (*Sherlock, M
 
 ![Relationships seen from both sides](tutorial/rels.png)
 
+**The relationship map** (Story ▾, or the button under Relationships) draws the characters and their Relationships rows as a picture: a solid line where both sheets describe the relationship, a dashed one with an arrow where only one does. Click a name to open the sheet.
+
+![The relationship map](tutorial/relmap.png)
+
 **Your own fields** sit under the tags: press *+ Add your own field* to add fields like Magic, Rank or Born, as one line, longer text, a choice list, a number or a date. They appear on every character (or place, note, chapter or story arc, or on the story overview) in the story, or in all your stories if you tick *Every story*.
 
-![Your own fields on a character sheet](tutorial/fields.png) Hints under each field explain what it's for; Options → Display → Field hints makes them smaller or hides them.
+![Your own fields on a character sheet](tutorial/fields.png) Hints under each field explain what it's for; Options → Layout → Field hints makes them smaller or hides them.
 
-## 9. Story arcs
+## 9. Story arcs and the planning board
 
 A story arc lays out a plotline on a tension curve. Start from a classic structure (Freytag's pyramid, the three-act structure, Save the Cat, the hero's journey or kishōtenketsu) or a blank arc, then drag the numbered beats along the story and up or down in tension.
 
 ![A story arc on its tension curve](tutorial/arc.png)
 
 Link each chapter to the beats it carries, from the chapter's details. The dashed line then shows your chapters as written, and each beat says whether it lands where the structure puts it, early or late.
+
+**The planning board** (Story ▾ → Planning board) is a free space for each story. Add idea cards, or cards for chapters, characters, places, notes and story arcs, and drag them anywhere. Drag from a card's ● to another card to connect them (on a phone, tap ● and then the other card), and click a line to label it. *Arrange as tree* lays the cards out along their lines, starting from the card you selected, only when you click it, with Undo. *Relationship lines* adds the Relationships between character cards. An idea card can become a chapter or a note. *List* shows the same as a list for the keyboard, and *Save as image* makes a picture to print.
+
+![The planning board](tutorial/board.png)
 
 ## 10. Tags and search
 
@@ -151,7 +163,7 @@ Tags work on three levels:
 - **Images:** click an image to tag it. Quire adds its shape (portrait, landscape or square) by itself.
 - **Passages:** select a sentence or a passage and press the tag button in the toolbar. A bar in the margin marks it. A passage tag lists its passages in story order, so you can follow a subplot or a clue through the book.
 
-A tag joining two names with `/` or `&`, like *Holmes & Watson*, is a relationship tag and shows in red italics.
+A tag joining two names with `/` or `&`, like *Holmes & Watson*, is a relationship tag and shows in red italics. The ⇄ on such a tag, or the switch on its page or at the top of a `#tag` search, turns that off for tags like *Hurt/Comfort*.
 
 The Tags tab shows all of them, how often they're used and what they're used on. Select a tag to see everything that carries it.
 
@@ -159,11 +171,11 @@ The Tags tab shows all of them, how often they're used and what they're used on.
 
 ## 11. Revising
 
-**The Prose checker** (the pencil button in the toolbar) marks hard and very hard sentences, adverbs, passive voice and wordy phrases, after Hemingway's readability rules, plus word echoes and dialogue. Click a highlight to see why it's marked, or a category to show or hide it. Options → Text → Prose checker chooses between the full checker and Hemingway's rules only.
+**The Prose checker** (the pencil button in the toolbar) marks hard and very hard sentences, adverbs, passive voice and wordy phrases, after Hemingway's readability rules, plus word echoes and dialogue. Click a highlight to see why it's marked, or a category to show or hide it. Options → Checks and marks → Prose checker chooses between the full checker and Hemingway's rules only.
 
 ![The Prose checker](tutorial/prose.png)
 
-**Watch words** are words and phrases you want to notice: a habit to break, or a fact to keep straight. When you type one, a small note appears beside the line and fades away without interrupting you. The *Watch words* button above a text edits the list for every story, for this story, or for this chapter only, for something that matters just there for a while, like a name a character shouldn't know yet. Options → Text switches watch words on or off.
+**Watch words** are words and phrases you want to notice: a habit to break, or a fact to keep straight. When you type one, a small note appears beside the line and fades away without interrupting you. The *Watch words* button above a text edits the list for every story, for this story, or for this chapter only, for something that matters just there for a while, like a name a character shouldn't know yet. Options → Checks and marks switches watch words on or off.
 
 **Comments:** select some text and press the speech-bubble button. Comments are listed under the text and left out of every export.
 
@@ -181,7 +193,7 @@ When a stage of work is done, **Trim…** in Version history thins out the versi
 
 ## 12. Stats
 
-Stats covers the whole story: manuscript length against your target, writing pace and streak, chapter lengths, draft status, point of view, cast presence, settings, story arc coverage and a story timeline. The switch at the bottom changes the level of detail, from *Basic* to *In depth*, which adds sentence rhythm, openers, punctuation, repeated phrases and a narration check.
+Stats covers the whole story, in sections you can fold (Quire remembers which): progress first (writing pace, your word goal and deadline, sprints, draft status), then the shape of the story (chapter lengths, story arc coverage, the story timeline), the cast and places (point of view, cast presence, settings, Voices), prose and tags. Values with a natural range, like the manuscript against its target, show as gauges; Options → Checks and marks → *Stats tiles* switches to plain numbers. The switch at the bottom changes the level of detail, from *Basic* to *In depth*, which adds sentence rhythm, openers, punctuation, repeated phrases and a narration check.
 
 ![Stats](tutorial/stats.png)
 
@@ -191,7 +203,7 @@ The **Story timeline** puts your chapters in story order. Scenes with their own 
 
 In depth, **paragraph density** for the whole manuscript lists the walls of text: places where three or more complex or dense paragraphs come in a row. Pick a chapter to see every paragraph as a dot. The **narration check** flags chapters whose sentences outside dialogue don't match their Narration setting; if a chapter is fine as it is (a text-message exchange, say), press *This is fine*.
 
-**Voices** compares how your viewpoint characters narrate: their sentence length, favorite words and phrases, the senses they lean on, and whether a voice drifts from chapter to chapter. Senses are counted per 1,000 words; open *Words counted* to see which words counted, and *Your sense words…* to add your own, like a smell that runs through your story. Mark who says a line of dialogue with the *Who says this* button, and Voices compares how your characters speak too. Only lines you mark count; Quire never guesses a speaker.
+**Voices** compares how your viewpoint characters narrate: their sentence length, favorite words and phrases, the senses they lean on, and whether a voice drifts from chapter to chapter. Each character is compared with the whole manuscript, and *Stands out* names where they depart most from your usual style. Senses are counted per 1,000 words; open *Words counted* to see which words counted, and *Your sense words…* to add your own, like a smell that runs through your story, or to leave out words of Quire's that mislead (feel and felt start out left out). Mark who says a line of dialogue with the *Who says this* button, and tag a passage as a character's thoughts (the tag button → *Thoughts of*), and Voices compares how your characters speak and think too. Only what you mark counts; Quire never guesses. *What Voices measures* explains when the figures show a character's voice and when they show your own.
 
 ## 13. Settings
 
@@ -199,10 +211,16 @@ Everything is in **Options**. This is the whole menu, laid out in three columns:
 
 ![The Options menu](tutorial/options.png)
 
+Click a section's heading to fold it; Quire remembers.
+
 - **Export:** the manuscript as a Word manuscript (standard manuscript format, for submissions), a Word document, an e-book, a web page, Markdown or text; sheets and notes as Markdown; print or PDF; AO3 sharing.
-- **Backup:** back up this story or all of them, encrypt backups, restore, save the notebook file, encrypt the file and the save reminder.
-- **Display:** sidebar or tabs, field hints, stats detail, intense focus, the sprint and word count above the text, the progress bar, status colors, highlighted name and beat chips, the buttons above the text, theme, page width and text column width.
-- **Text:** Google Fonts, the Prose checker, watch words, typewriter scrolling, text size, how passage tags show, paragraph indents, smart quotes and their style, dashes, ellipses and the question before splitting a chapter.
+- **Saving and backups:** save the notebook file, the save reminder, back up this story or all of them, restore, and review rounds (send for review, bring in a review).
+- **Encryption:** encrypt this file, change its password, encrypt backups.
+- **Look:** theme, text size, text column and page width, Google Fonts, paragraph indents.
+- **Layout:** sidebar or tabs, sidebar categories, the buttons above the text, field hints, status colors and chapter statuses, highlighted name and beat chips.
+- **While writing:** intense focus, typewriter scrolling, the sprint and word count above the text, the progress bar, and the question before splitting a chapter.
+- **Typing:** smart quotes and their style, dashes, ellipses.
+- **Checks and marks:** the Prose checker, watch words, how passage tags and speaker marks show, stats detail and stats tiles (gauges or plain).
 - **Chapter history:** how soon after a pause a snapshot is taken, thinning out old versions, and whether history goes into the saved file.
 
 **Themes:** pick one of six (Light, Twilight, Dark, Sepia, Lamplight, Ember), or **+ New theme…** to make your own from four colors. Quire works out the other shades, previews the theme as you go and checks the text stays readable.
@@ -213,8 +231,9 @@ Everything is in **Options**. This is the whole menu, laid out in three columns:
 
 - **While you write,** Quire keeps your work in the browser's storage, so a closed tab loses nothing.
 - **Save file** (Ctrl+S) writes everything into `quire.html` itself. **The file is your real copy:** keep it with your writing and back it up like any document. In Chrome and Edge you choose the file once and later saves overwrite it. Firefox and Safari download an updated copy each time, by default into your Downloads folder. To save over your Quire file in Firefox, open *Settings → General → Files and Applications* and turn on **Always ask you where to save files**. Each Save file then asks where to put it: choose your Quire file and confirm that you want to replace it. Firefox remembers the folder. A reminder nudges you if work has gone unsaved for a while.
-- **Backups** (Options → Backup) save one story or all of them as a `.json` file, which any copy of Quire can restore.
-- **Encryption** (Options → Backup, optional) locks backups and the saved file with a password, and the copy Quire keeps in the browser too. If you forget it, nobody can recover the writing, so keep it safe.
+- **Backups** (Options → Saving and backups) save one story or all of them as a `.json` file, which any copy of Quire can restore.
+- **Review rounds:** *Send for review…* makes a review copy of the story for someone else's Quire; they edit and comment, then send back a backup of it. *Bring in a review…* turns every changed chapter into a draft named after them, to merge change by change, and lists changed sheets side by side to take or leave. A Word file with tracked changes and comments works the same way. Nothing replaces your text without a click.
+- **Encryption** (Options → Encryption, optional) locks backups and the saved file with a password, and the copy Quire keeps in the browser too. If you forget it, nobody can recover the writing, so keep it safe.
 
 ## 15. Bringing writing in and out
 
@@ -222,7 +241,7 @@ Everything is in **Options**. This is the whole menu, laid out in three columns:
 
 ![Importing a Word document: the whole Adventures of Sherlock Holmes](tutorial/import.png)
 
-**E-book** (Options → Export → E-book) makes an EPUB for Apple Books, Kobo, Google Play Books, and Kindle through Send to Kindle, with a table of contents, a title page and a simple cover.
+**E-book** (Options → Export → E-book) makes an EPUB for Apple Books, Kobo, Google Play Books, and Kindle through Send to Kindle, with a table of contents, a title page, a simple cover, and your dedication, epigraph, acknowledgments and about-the-author page if you wrote them.
 
 ![The e-book settings](tutorial/ebook.png)
 
@@ -239,6 +258,8 @@ Quire works on phones too. The title bar stacks up, the tabs scroll sideways, an
 ![Quire on a phone: the Chapters page and a chapter](tutorial/phone.png)
 
 To use the same notebook on your phone, copy `quire.html` there (with a cloud folder, say) and open it in the phone's browser. Use one copy at a time, so two copies don't drift apart.
+
+Opened from an app such as Dropbox, the browser only gets a temporary link to the file, so Save file saves a new copy, named as you last saved it. Save it over the old file (confirm replacing it), or delete the old one afterwards.
 
 ## 18. Help
 
