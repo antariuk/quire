@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.7 (2026-11-07)
+
+- **Safer saved files:** every file saved from Quire now carries the same security rule as the download, and the rule lets only Quire's own program run (named by its fingerprint), so a script slipped into a saved file is blocked by the browser.
+- **Hostile files refused:** backups and review files over 500 MB, encrypted files that would unpack to gigabytes or ask for an absurd number of key rounds, and encrypted files made for another purpose are refused at once, and the tab keeps working.
+- **Example story:** Quire keeps only one unchanged copy. Opening it again opens the one you have, restoring a backup skips its unchanged copy, and your own edited version from a backup replaces the unchanged one here (with Undo). Unchanged examples are left out of backups and saved files.
+- **Stats:** *Customize…* hides tiles and sections and puts them in your own order, for every story; hidden sections aren't worked out at all. Selecting a tag in the Stats cloud opens its full panel right under the cloud.
+- **Word goal** per day, week, month or year, from calendar periods or from a start date you pick. Month and year goals say how many words a day are still needed.
+- **Images:** Options → Saving and backups → *New images* scales new photos to Small (1,000 px), Medium (1,600 px, the default) or Large (2,400 px), or keeps the original. *Image sizes…* shrinks the images already in a story, after asking; chapters keep the old version in their history.
+- **Videos and music in exports:** one choice for every export: Standard (players in the web page, links elsewhere, left out of Word), Links everywhere (Word included), or Leave out.
+- **Relationship map:** drag the dots where you like; select a character to light up their lines, labeled with what their own sheet says; lines nobody has described yet look different.
+- **Planning board:** the action buttons sit on the selected card, *Add the related characters* brings in the characters related to those on the board, and the toolbar takes less room.
+- **Toolbar:** a tool in use looks pressed, and a softer look marks the tool whose mark the cursor is in.
+- Fixed: on the planning board, text typed into a new idea card was lost unless you added another card; it's now kept as you type, and Enter finishes the card (Shift+Enter for a new line).
+- Fixed: *Relationship lines* on the planning board didn't change the board until something else was redrawn.
+- Fixed: the prose checker's button stopped looking pressed once you clicked into the text.
+- Fixed: after Save file from an app link (Dropbox on Android), an older copy could stay behind in the browser's storage.
+- Fixed: a backup made within a moment of typing could miss the latest version-history step.
+- Quire is now about 1,058 KB, up from 1,026 KB. (The 1.6 notes said 1,020 KB; that was a character count, not bytes.)
+
 ## 1.6 (2026-11-02)
 
 - **Planning board** (Story ▾ → Planning board): a free board for each story with idea cards and cards for chapters, characters, places, notes and story arcs. Connect cards with lines (drag from ●, or tap ● and then the other card), label the lines, pan and zoom, and *Arrange as tree* on a click, with Undo. Relationship lines between character cards, idea cards that become chapters or notes, a list view for the keyboard, and *Save as image* for printing.

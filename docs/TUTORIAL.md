@@ -11,7 +11,7 @@ A short tour of Quire's core features and settings, using the example story that
 Open `quire.html` in your browser. The first time, Quire offers two ways in:
 
 - **Start a new story** gives you an empty story to fill.
-- **Open an example story** loads two chapters of *The Red-Headed League* by Arthur Conan Doyle, with characters, places, notes, a story arc and tags filled in. It's the quickest way to see every feature with something in it. Delete it from the Story menu once you're done.
+- **Open an example story** loads two chapters of *The Red-Headed League* by Arthur Conan Doyle, with characters, places, notes, a story arc and tags filled in. It's the quickest way to see every feature with something in it. Delete it from the Story menu once you're done. Quire keeps only one unchanged copy, and leaves it out of backups and saved files until you change something in it.
 
 ![The start page](tutorial/start.png)
 
@@ -21,7 +21,7 @@ Open `quire.html` in your browser. The first time, Quire offers two ways in:
 
 1. **Story picker.** Switch between your stories.
 2. **Story menu.** Go to, new story, the example story, duplicate, delete, the trash, read-through, the planning board, the relationship map, milestones, trimming version history, chapter statuses, find and replace across the story, and importing chapters.
-3. **Overview.** The story's own sheet: title, logline, genre, theme, target length, deadline and word goal, front and back matter, and a count of everything in it.
+3. **Overview.** The story's own sheet: title, logline, genre, theme, target length, deadline and word goal (per day, week, month or year, optionally from a start date), front and back matter, and a count of everything in it.
 4. **Stats.** Word counts, writing pace, chapter lengths, point of view, cast presence, Voices and more.
 5. **Sprint.** A writing timer with an optional word goal and a chime at the end.
 6. **Save file.** Writes everything into the HTML file itself (Ctrl+S, or ⌘S on a Mac). It turns dark when there's something unsaved.
@@ -69,7 +69,7 @@ Scroll down a chapter's sheet to its text.
 
 ![The editor and its toolbar](tutorial/editor.png)
 
-1. **The toolbar.** From left to right: font, bold, italic, underline, strikethrough, clear formatting, heading and subheading, alignment, paragraph indents, quotation block, smart quotes, bulleted and numbered lists, scene break, horizontal line, web link, link to an entry, image, embedded video or music, find and replace, the Prose checker, passage tag, *Who says this*, comment and split chapter. Hover over any button for its name.
+1. **The toolbar.** From left to right: font, bold, italic, underline, strikethrough, clear formatting, heading and subheading, alignment, paragraph indents, quotation block, smart quotes, bulleted and numbered lists, scene break, horizontal line, web link, link to an entry, image, embedded video or music, find and replace, the Prose checker, passage tag, *Who says this*, comment and split chapter. Hover over any button for its name. A tool in use looks pressed, and a softer look marks the tool whose mark the cursor is in.
 2. **Focus mode** hides everything but your writing (see below). The full-screen button next to it hides the browser's own bars too.
 3. **Reference** opens the [reference panel](#6-the-reference-panel) beside the text.
 4. **Watch words** lists words to notice while you write, including ones for this chapter only (see [Revising](#11-revising)).
@@ -135,7 +135,7 @@ Under **Also known as**, list a character's or place's other names (*Sherlock, M
 
 ![Relationships seen from both sides](tutorial/rels.png)
 
-**The relationship map** (Story ▾, or the button under Relationships) draws the characters and their Relationships rows as a picture: a solid line where both sheets describe the relationship, a dashed one with an arrow where only one does. Click a name to open the sheet.
+**The relationship map** (Story ▾, or the button under Relationships) draws the characters and their Relationships rows as a picture. Drag the dots where you like; Quire remembers. Select a dot to light up that character's lines, labeled with what their own sheet says, and click the name to open the sheet. A dashed line with an arrow means only one sheet has the row; a faint dotted line, that nobody has described it yet.
 
 ![The relationship map](tutorial/relmap.png)
 
@@ -151,7 +151,7 @@ A story arc lays out a plotline on a tension curve. Start from a classic structu
 
 Link each chapter to the beats it carries, from the chapter's details. The dashed line then shows your chapters as written, and each beat says whether it lands where the structure puts it, early or late.
 
-**The planning board** (Story ▾ → Planning board) is a free space for each story. Add idea cards, or cards for chapters, characters, places, notes and story arcs, and drag them anywhere. Drag from a card's ● to another card to connect them (on a phone, tap ● and then the other card), and click a line to label it. *Arrange as tree* lays the cards out along their lines, starting from the card you selected, only when you click it, with Undo. *Relationship lines* adds the Relationships between character cards. An idea card can become a chapter or a note. *List* shows the same as a list for the keyboard, and *Save as image* makes a picture to print.
+**The planning board** (Story ▾ → Planning board) is a free space for each story. Add idea cards, or cards for chapters, characters, places, notes and story arcs, and drag them anywhere. On an idea card, Enter finishes and Shift+Enter starts a new line. Drag from a card's ● to another card to connect them (on a phone, tap ● and then the other card), and click a line to label it. A selected card shows its buttons: Open, Edit, Make a chapter or note, Remove. *Arrange as tree* lays the cards out along their lines, starting from the card you selected, only when you click it, with Undo. *Relationship lines* adds the Relationships between character cards, and *Add the related characters* brings in the ones still missing. *List* shows the same as a list for the keyboard, and *Save as image* makes a picture to print.
 
 ![The planning board](tutorial/board.png)
 
@@ -193,7 +193,7 @@ When a stage of work is done, **Trim…** in Version history thins out the versi
 
 ## 12. Stats
 
-Stats covers the whole story, in sections you can fold (Quire remembers which): progress first (writing pace, your word goal and deadline, sprints, draft status), then the shape of the story (chapter lengths, story arc coverage, the story timeline), the cast and places (point of view, cast presence, settings, Voices), prose and tags. Values with a natural range, like the manuscript against its target, show as gauges; Options → Checks and marks → *Stats tiles* switches to plain numbers. The switch at the bottom changes the level of detail, from *Basic* to *In depth*, which adds sentence rhythm, openers, punctuation, repeated phrases and a narration check.
+Stats covers the whole story, in sections you can fold (Quire remembers which): progress first (writing pace, your word goal and deadline, sprints, draft status), then the shape of the story (chapter lengths, story arc coverage, the story timeline), the cast and places (point of view, cast presence, settings, Voices), prose and tags. Values with a natural range, like the manuscript against its target, show as gauges; Options → Checks and marks → *Stats tiles* switches to plain numbers. **Customize…** at the top hides tiles and sections and puts them in your own order, for every story. Select a tag in the tag cloud to open its panel right below it. The switch at the bottom changes the level of detail, from *Basic* to *In depth*, which adds sentence rhythm, openers, punctuation, repeated phrases and a narration check.
 
 ![Stats](tutorial/stats.png)
 
@@ -213,14 +213,14 @@ Everything is in **Options**. This is the whole menu, laid out in three columns:
 
 Click a section's heading to fold it; Quire remembers.
 
-- **Export:** the manuscript as a Word manuscript (standard manuscript format, for submissions), a Word document, an e-book, a web page, Markdown or text; sheets and notes as Markdown; print or PDF; AO3 sharing.
-- **Saving and backups:** save the notebook file, the save reminder, back up this story or all of them, restore, and review rounds (send for review, bring in a review).
+- **Export:** the manuscript as a Word manuscript (standard manuscript format, for submissions), a Word document, an e-book, a web page, Markdown or text; sheets and notes as Markdown; print or PDF; how videos and music appear in exports (players, links, or left out); AO3 sharing.
+- **Saving and backups:** save the notebook file, the save reminder, back up this story or all of them, restore, the size of new images and *Image sizes…* to shrink the ones you have, and review rounds (send for review, bring in a review).
 - **Encryption:** encrypt this file, change its password, encrypt backups.
 - **Look:** theme, text size, text column and page width, Google Fonts, paragraph indents.
 - **Layout:** sidebar or tabs, sidebar categories, the buttons above the text, field hints, status colors and chapter statuses, highlighted name and beat chips.
 - **While writing:** intense focus, typewriter scrolling, the sprint and word count above the text, the progress bar, and the question before splitting a chapter.
 - **Typing:** smart quotes and their style, dashes, ellipses.
-- **Checks and marks:** the Prose checker, watch words, how passage tags and speaker marks show, stats detail and stats tiles (gauges or plain).
+- **Checks and marks:** the Prose checker, watch words, how passage tags and speaker marks show, Customize Stats, stats detail and stats tiles (gauges or plain).
 - **Chapter history:** how soon after a pause a snapshot is taken, thinning out old versions, and whether history goes into the saved file.
 
 **Themes:** pick one of six (Light, Twilight, Dark, Sepia, Lamplight, Ember), or **+ New theme…** to make your own from four colors. Quire works out the other shades, previews the theme as you go and checks the text stays readable.

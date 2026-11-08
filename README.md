@@ -12,7 +12,7 @@
 
 Your writing stays in the file and in your browser. Quire sends nothing anywhere, has no tracking or analytics, and only goes online if you switch on Google Fonts. The whole program is plain JavaScript inside the file, with no outside code, so you can read every line of it.
 
-The file also carries a security rule that your browser enforces: `quire.html` may reach only Google Fonts (if you turn them on). Anything else, such as a hidden script trying to send your text somewhere, is blocked. See [What can the file connect to?](#what-can-the-file-connect-to)
+The file also carries a security rule that your browser enforces, and so does every copy you save from it: `quire.html` may reach only Google Fonts (if you turn them on), and only Quire's own program may run. Anything else, such as a hidden script trying to send your text somewhere, is blocked. See [What can the file connect to?](#what-can-the-file-connect-to)
 
 If you like, Quire encrypts your backups and the saved file with a password (AES-256), so a lost laptop or a shared cloud folder doesn't give your writing away. With the file encrypted, the working copy Quire keeps in your browser is encrypted too.
 
@@ -42,7 +42,7 @@ How saving works, in short:
 - A reference panel keeps a character, place, note or another chapter beside the text while you write, and Go to (Ctrl+K) jumps to any entry, tag or command in a few keystrokes
 - Typewriter scrolling, adjustable text size and page width, six themes from light to a warm dark, and your own themes from four colors
 - Writing sprints with a timer, a word goal and a chime; a progress bar at the bottom of the screen during sprints, toward a chapter's word target, or toward today's share of a deadline
-- Word targets per chapter and for the whole story, a deadline that works out the words a day it takes, a daily or weekly word goal, a word count for any selection, and find and replace in one chapter, all chapters or everything
+- Word targets per chapter and for the whole story, a deadline that works out the words a day it takes, a word goal per day, week, month or year (from a start date you pick, if you like), a word count for any selection, and find and replace in one chapter, all chapters or everything
 - Back to where you were: after following a link, a tag or a search result, one click (or the browser's Back button) returns you to the same spot
 
 **Drafts and history**
@@ -56,7 +56,7 @@ How saving works, in short:
 - Sheets for the story, chapters, characters, places and notes, with portraits and place images
 - Story arcs on a tension curve, built from classic structures and checked against your chapters
 - Links between entries with `[[Title]]`, from a toolbar button or by typing `[[`, with suggestions, "also known as" names, and backlinks shown automatically
-- Relationships between characters, shown from both sides, in A–Z or your own order, and as a relationship map
+- Relationships between characters, shown from both sides, in A–Z or your own order, and as a relationship map you can arrange, where selecting a character shows how their own sheet describes each relationship
 - A planning board for each story: idea cards and cards for chapters, characters, places and notes, connected by lines, laid out as a tree on a click, and saved as an image
 - Your own fields on characters, places, notes, chapters, story arcs and the story overview: one line, longer text, a choice list, a number or a date
 - Story time: real dates, plain days or a calendar of your own (months, weekdays, eras, leap years), times for chapters and single scenes, and a story timeline that shows flashbacks
@@ -73,7 +73,7 @@ How saving works, in short:
 - Prose checker: Hemingway-style readability (hard sentences, adverbs, passive voice, wordy phrases), plus word echoes and dialogue
 - Watch words: list habits to avoid or facts to keep straight, and a quiet note appears beside the line when you type one
 - Comments on any passage, also while reading the whole manuscript straight through in read-through mode
-- Stats from basic to in-depth, in sections that fold, with gauges where a value has a natural range: daily progress, dialogue share, sentence rhythm, word variety, reading level, sentence openers, punctuation, repeated phrases, the walls of text in your manuscript and a narration check
+- Stats from basic to in-depth, in sections that fold and that you can hide and reorder, with gauges where a value has a natural range: daily progress, dialogue share, sentence rhythm, word variety, reading level, sentence openers, punctuation, repeated phrases, the walls of text in your manuscript and a narration check
 - Voices: compare how your viewpoint characters narrate against the whole manuscript, with their favorite words and phrases, rhythm, the senses they lean on (add your own sense words, or leave misleading ones out), and how a voice changes from chapter to chapter; mark who says each line and tag passages as a character's thoughts, and compare how your characters speak and think too
 - Review rounds: send a story for review as a Quire file, or bring in a Word file with tracked changes. Each changed chapter becomes a draft to merge change by change, and nothing replaces your text without a click.
 
@@ -103,18 +103,18 @@ Quire needs JavaScript, which browsers allow by default. If you use a blocker su
 
 ## Questions
 
-**Is it really just one file?** Yes. The page, the styles and the program are all inside `quire.html` (about 1,020 KB empty). Your stories, images and history are stored in the same file when you save.
+**Is it really just one file?** Yes. The page, the styles and the program are all inside `quire.html` (about 1,058 KB empty). Your stories, images and history are stored in the same file when you save.
 
 **Can I use it on more than one computer?** Yes: save, take the file with you, and open it there. Use one copy at a time, so that two copies don't drift apart.
 
-**What about the example story?** It holds two chapters of "The Red-Headed League" by Arthur Conan Doyle (1891), from Project Gutenberg, which are in the public domain. The outlines, sheets, notes and tags around them were written for the example. Delete it from the Story menu whenever you like.
+**What about the example story?** It holds two chapters of "The Red-Headed League" by Arthur Conan Doyle (1891), from Project Gutenberg, which are in the public domain. The outlines, sheets, notes and tags around them were written for the example. Delete it from the Story menu whenever you like. Quire keeps only one unchanged copy of it, and leaves it out of backups and saved files until you change something in it.
 
 **How was Quire made?** With the help of Claude, Anthropic's AI assistant.
 
 **What can the file connect to?**
 - **Google Fonts**, only if you switch them on (Options → Look), to load typefaces.
 - **Pages you open yourself**: a link you click, or the AO3 page that AO3 sharing opens in a new tab.
-- **Nothing else.** A security rule at the top of the file (a Content-Security-Policy) tells your browser to block every other connection. Web addresses you may spot inside the file, such as `schemas.openxmlformats.org` or `www.idpf.org`, are names the Word and e-book formats require as labels; nothing ever connects to them.
+- **Nothing else.** A security rule at the top of the file (a Content-Security-Policy) tells your browser to block every other connection, and to run no script except Quire's own program. Every file you save from Quire carries the same rule. Web addresses you may spot inside the file, such as `schemas.openxmlformats.org` or `www.idpf.org`, are names the Word and e-book formats require as labels; nothing ever connects to them.
 
 ## Feedback
 
